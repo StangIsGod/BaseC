@@ -1,0 +1,182 @@
+﻿bool UpArmourFlag[2];
+bool Rainbow_Effect;
+bool PlayerUIInfo;
+bool AdminKickProtection;
+bool AdminKickProtectionv22;
+bool Rocket_Player_Shoot[4];
+bool ObjectInfoBool;
+bool ViewFPS;
+bool SoundChange;
+bool isserverhost;
+bool SearchingHeadlight;
+bool PlayerHeightBool;
+bool lrInstruction;
+bool xInstruction;
+bool squareInstruction;
+bool instructions = true;
+bool instructionsSetupThisFrame;
+bool optionPress = false;                //オプションが押されたかの判定。押されたらtrue
+bool rightPress = false;                //十字の右が押されたかの判定
+bool leftPress = false;                //十字の左が押されたかの判定
+bool fastRightPress = false;                //十字の右が押されているかの判定
+bool fastLeftPress = false;                //十字の右が押されているかの判定
+bool squarePress = false;                //□ボタンが押されたかの判定
+bool keyboardActive = false;                //キーボードを表示するフラグ
+int addressInt;
+bool TestUIOption;
+bool IronmanV2;
+bool MoneyFlag[16];
+bool ParachuteFlag[16];
+bool DropSnackFlag[16];
+bool DropWeaponFlag[16];
+bool TeleportGunFlag[16];
+bool KickLoop[16];
+int TimerGAME = 0;
+bool KICKtimer;
+int Loop1 = 0;
+int Loop2 = 0;
+bool ExplosionGunFlag[16];
+bool FireGunFlag[16];
+bool SteamGunFlag[16];
+bool MoneygunPlayerFlag[16];
+bool FreaGun[16];
+bool FireWorkGun[16];
+bool ESPFlag[16];
+bool WantedFlag[16];
+bool DoFreezeConsole;
+bool DeleteSpawnedPedFreeze;
+Entity GTA2Cam;
+int Vehicle_Hash = 0;
+bool GTA2CamTEST;
+float CAMHIGH = 4.0000f;
+bool allplayer40k;
+bool NameESPFlag;
+bool UNKO222;
+bool TPFreeze;
+bool Teleporting;
+bool SetPlayerAnimation;
+bool JudgeMent_1;
+bool JudgeMent;
+bool SlingShot;
+bool boost;
+bool carstop;
+bool soratobu;
+bool AttachtoVehicleTop;
+bool PlayerAttached;
+bool ObjectAttach;
+bool StealClothes;
+bool spectatemode, AttachingToMe;
+bool DeleteAllWantedLevels;
+char* BulletAtPlayerString;
+bool ShootBulletAPlayerLoop, ShootBulletAPlayer;
+bool AllESP;
+bool infiniteammo, UnlimitedAmmo1, DeleteGun, ShootVehicle, IsShootingVehicle, RapidFire;
+bool Loading_Vehicle;
+bool ChromeSpawn;
+bool DRIFT;
+bool spawnGodmode;
+bool CarGodCanBeDmg = true;
+bool spawnplayer;
+bool isattach;
+bool isFadeinSpawn = false;
+bool isinvisible;
+bool TeleAutomIncar = true;
+bool MaxUpgrades = true;
+bool threecolorsmoke;
+bool smokecolortrue;
+bool IsGodModeVehicle;
+bool Neongreen1;
+bool neoncustum;
+bool Blue1;
+bool Purple1;
+bool Pink1;
+bool Red1;
+bool Orange1;
+bool Yallow1;
+bool vehflymode1;
+bool Random1;
+bool Slow_Rainbow_Loop, RandomColorLoop, vehflymode, isHydroJump, isHydroJump2, drift, VehicleBoostStop, DriveONwall;
+bool BAIKUKUU;
+bool Start;
+bool Start1;
+bool Start2;
+bool Start3;
+bool seigyo;
+bool END;
+bool END1;
+bool neonmodcar;
+bool neonmodcar1;
+Entity NeonWhitelightCreat = 0;
+
+Entity NeonWhitelightCreat1 = 0;
+
+Entity NeonWhitelightCreat3 = 0;
+
+Entity NeonWhitelightCreat4 = 0;
+Entity NeonWhitelightCreat2 = 0;
+bool EQMOD;
+bool HyperDxColorSelect;
+bool rainbowneon;
+bool maincolor;
+bool subcolor;
+bool smokecolor;
+bool IsGetFlag;
+bool Getter;
+bool IsGetFlag2;
+bool WaterQuadAddress;
+bool AllQuadView;
+bool Psychokinetic_anim;
+bool ObjectAttachFlag22;
+int spawnedped;
+bool FreezeTest;
+bool Psychokinetic;
+bool testESP;
+bool SpeedMeter;
+bool CreateMap, ObjectBypass, objectbypass;
+bool SettingFlying;
+bool ComeBackFlying;
+bool Getting, IsGodddd, IsgetQuestion;
+bool Invincible, superpunch, Invisible, nocops, SuperJump, SuperRun, UltraRun, UltraJump, Exmelee, fireammo, Exammo, revealPeople, offradar, Copsturnblindeye;
+bool IsGet, HulkL2Flag, HulkR1Flag, isPed, IsShooting, IsDrop;
+int ParachuteMODIndex;
+bool LDIPL, BlackOut, isCa, WaterisntHere, HulkMod, FCamera, DragonFireTrue, UCAV, HoverFlag, ParachuteMOD, RideonAnimals, FlashRunMod, ProneMod, WalkonSky,
+WaterEditFlagTrue, WaterEditFlagFalse, Predator_ON2, DragonFireEnable, DragonFireMovement, DragonFireFirstPerson, SelectedTarget, TargetAttach, DragonFireAuto, DragonFireSpawn, HoverBoardModding, HoverboardMode,
+BodyFlag, RedLampFlag, StickFlag, Stick2Flag, Stick3Flag, Stick4Flag, PropellerFlag,
+Propeller2Flag, Propeller3Flag, Propeller4Flag, DragonFireAttachedAAA, DragonFireAttacking, minigun01flag, isHulk;
+int timerdesu5;
+bool AntiFreezeObject;
+bool ShowTalking1;
+bool VChyouji;
+bool ObjectSizeBool;
+bool MoveAnimal;
+bool isSpawned;
+bool MinecraftMode;
+bool ObjectSpawn;
+bool infamousMOD;
+bool SetPlayerAnimationForMe;
+bool isUpperAnim;
+bool IsGettingAddress;
+bool PedSpawn = false;
+bool IsPedBodyguard, IsPedHaveWeapon, IsPedInvincible;
+bool ShotToEntity, LoopAttach2;
+bool gmode;
+
+bool OtherCostume;
+bool ChangeModelHash;;
+bool IsGettingProtec;
+bool AttachFlag[20];
+bool EditVehicle_Main_[20];
+bool EditVehicle_Sub_[20];
+bool EditVehicle_Smoke_[20];
+bool PTFX, TaskP, Ctask, VehiP, Remvp, FrezP, ClearAreaAll,
+VehicleAttachProtect, Pedattach, FreezeConsoleBAN,
+ NotHeliFlying,
+  ChangeStatsProtection;
+bool RPprotection = true;
+bool AnimationPlusFlag;
+bool AnimationMinusFlag;
+bool Vehicle_Atach, Vehicle_Atach2;
+bool entityselectedgun;
+bool ObjectAttachFlag222;
+Entity selected; 
+bool ScriptDetect = true;
