@@ -1,4 +1,6 @@
-﻿char *CompModelName = "";
+﻿char *MsgInfoBuf[10];
+
+char *CompModelName = "";
 char ViewAllOption[30];                     //一時的に文字を格納する場所 --- 右上にオプション数と選択している場所を表示
 char *UITextTitle = "";
 char *infoText = "";                     //ヘルプを格納
@@ -12,15 +14,415 @@ char KuronekoIsgomi[100];
 char KuronekoIsgomi2[100];
 char bufFPS[50];
 char *PedNameList[10];
+
 char *Family[] = { "HATS", "GLASSES", "EARS", "FACE", "MASK", "HAIR", "TORSO", "LEGS", "HANDS", "SHOES", "SPECIAL1", "SPECIAL2", "SPECIAL3", "TEXTURE", "TORSO2" };
 char *MapObjectName;
+char *CHANGEMenu[] = { "晴天", "吹雪", "快晴", "雲", "晴天2", "曇り", "緑色", "曇り2", "雨", "霧", "雪", "天気雪", "雷", "真っ暗" };
+char *ExplosionAttacking[] = { "(特大) 爆発", "(中) 爆発", "(小) 爆発", "噴水", "炎", "ガス", "火炎瓶" };
+char *CHANGEhsh[] = { "CLEAR","BLIZZARD", "CLEARING", "CLOUDS", "EXTRASUNNY", "FOGGY",  "NEUTRAL", "OVERCAST","RAIN","SMOG","SNOW","SNOWLIGHT","THUNDER" };
+char *ChangeTime[] = { "午前 0時", "午前 1時", "午前 2時", "午前 3時", "午前 4時", "午前 5時", "午前 6時", "午前 7時", "午前 8時", "午前 9時", "午前 10時", "午前 11時", "正午", "午後 1時", "午後 2時", "午後 3時", "午後 4時", "午後 5時", "午後 6時", "午後 7時", "午後 8時", "午後 9時", "午後 10時", "午後 11時"};
 char *objectnamearray[16];
 char KKKK[300];
 char KKSS[300];
 char Tire_UNko_Byte[] = { 0x40, 0xE0, 0x00, 0x00, 0x7F, 0x7F, 0xFF, 0xFF, 0x7F, 0x7F, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x3E, 0x00, 0x00, 0x00, 0x01, 0x0A, 0x0A, 0x0A, 0x00 };
 char Tire_Write_Byte[] = { 0x3C, 0x23, 0xD7, 0x0A, 0x41, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x34 };
+char Tire_Water_byte[] = { 0x40 , 0x40 , 0x00 , 0x00 , 0x40 , 0xE0 , 0x00 , 0x00 , 0x41 , 0x20 , 0x00 , 0x00 , 0x44 , 0x61 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x3D , 0x00, 0x00 , 0x00 , 0x01 , 0x00 , 0x00 , 0x00 , 0x3D , 0x00 , 0x00 , 0x00 , 0x01 , 0x00 , 0x00 , 0x00 , 0x3E , 0x00 , 0x00 , 0x00 , 0x01 , 0x50 , 0x50, 0x50 , 0x00 , 0x3A , 0x83 , 0x12 , 0x6F , 0x41 , 0x20 , 0x00 , 0x00 , 0x64 , 0xF9 , 0x97 , 0xC3 , 0x64 , 0xF9 , 0x97 , 0xC3 , 0x00 , 0x00 , 0x00 , 0x00 , 0x3F , 0x80 , 0x00 , 0x00 , 0x41 , 0x20 , 0x00 , 0x00 , 0xA1 , 0xE4 , 0xD1 , 0xFA , 0x44 , 0x3B , 0x6E , 0xBF , 0x8D , 0xD2 , 0x65 , 0xEF , 0x00 , 0x00 , 0x00 , 0x00 , 0xBF , 0x80 , 0x00 , 0x00 , 0xBF , 0x80 , 0x00 , 0x00 , 0xBF , 0x80 , 0x00 , 0x00 , 0xBF , 0x80 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 };
 char ParachuteText[100];
+char *OnlinePlayerModel[2] = { "男性", "女性" };
+char *ModdedWeapon[] = { "テレポート", "爆発", "炎", "放水", "40K", "フレアガン", "花火" };
+char *Playername[18];
+char *SpawnedEntityName[40];
+char *SpawnedEntityNames[40];
+char *_Attach_Char[] = { "乗っている車" };
+
+char* AnimalModels[]
+{
+	"a_c_boar",
+	"a_c_cow",
+	"a_c_deer",
+	"a_c_pig",
+	"a_c_mtlion",
+	"a_c_chimp",
+	"a_c_rhesus",
+	"a_c_coyote",
+	"a_c_rat",
+};
+char* AnimalModelsJP[]
+{
+	"a_c_boar",
+	"a_c_cow",
+	"a_c_deer",
+	"a_c_pig",
+	"a_c_mtlion",
+	"a_c_chimp",
+	"a_c_rhesus",
+	"a_c_coyote",
+	"a_c_rat",
+};
+char* DogModels[]
+{
+	//"a_c_husky",
+	//"a_c_retriever",
+	//"a_c_rottweiler",
+	//"a_c_shepherd",
+	"a_c_chop",
+};
+char* DogModelsJP[]
+{
+	//"ハスキー",
+	//"a_c_retriever",
+	//"a_c_rottweiler",
+	//"a_c_shepherd",
+	"a_c_chop",
+};
+char* FishModels[]
+{
+	"a_c_fish",
+	"a_c_sharktiger",
+};
+char* FishModelsJP[]
+{
+	"a_c_fish",
+	"a_c_sharktiger",
+};
+char* BirdsModel[]
+{
+	"a_c_chickenhawk",
+	"a_c_cormorant",
+	"a_c_crow",
+	"a_c_hen",
+	"a_c_pigeon",
+	"a_c_seagull",
+};
+char* BirdsModelJP[]
+{
+	"鶏",
+	"a_c_cormorant",
+	"カラス",
+	"a_c_hen",
+	"a_c_pigeon",
+	"a_c_seagull",
+};
+char* UniqueModelsJP[] =
+{
+	"Body Builder", //38
+	"Jesus",
+	"Zombie",
+	"Superman",
+	"Space Ranger",
+	"Cool Man",
+	"Burger Clerk",
+	"Naked Guy",
+	"Paparazzi",
+	"Monkey Face",
+	"Prisoner",
+	"Abnormal Guy",
+	"Corpse",
+	"Big Foot",
+	"Alien",
+	"Fireman",
+	"Astronaut"
+};
+
+char* UniqueModels[] =
+{
+	"u_m_y_babyd", //38
+	"u_m_m_jesus_01",
+	"u_m_y_zombie_01",
+	"u_m_y_imporage",
+	"u_m_y_rsranger_01",
+	"u_m_y_abner",
+	"u_m_y_burgerdrug_01",
+	"u_m_y_justin",
+	"u_m_y_paparazzi",
+	"u_m_y_pogo_01",
+	"u_m_y_prisoner_01",
+	"u_m_y_staggrm_01",
+	"u_f_y_corpse_01",
+	"ig_orleans",
+	"s_m_m_movalien_01",
+	"s_m_y_fireman_01",
+	"s_m_m_movspace_01"
+};
+char* HumanModels[] =
+{
+	"mp_m_niko_01", //28
+	"mp_m_claude_01",
+	"mp_m_marston_01",
+	"s_m_m_bouncer_01",
+	"s_m_y_cop_01",
+	"s_m_y_marine_01",
+	"mp_f_deadhooker",
+	"hc_hacker",
+	"hc_gunman",
+	"a_m_m_og_boss_01" //37
+};
+char* HumanModelsJP[] =
+{
+	"Niko", //28
+	"Claude",
+	"Marston",
+	"Bouncer",
+	"Cop",
+	"Marine",
+	"Dead Hooker",
+	"Cool Hacker",
+	"Gun Man",
+	"Mafia Boss" //37
+};
+char* StoryModels[] =
+{
+	"player_zero", //22
+	"player_one",
+	"player_two",
+	"ig_lestercrest",
+	"ig_lamardavis",
+	"ig_siemonyetarian" //27
+};
+char *StoryModelsJP[] = { "マイケル", "フランクリン", "トレバー","レスター", "ラマー","シミオン" };
+//ch2_03_sign_slod
+char *RampModelsOBJ[] = { "prop_jetski_ramp_01", "prop_mp_ramp_03", "prop_mp_ramp_02", "prop_mp_ramp_01" };
+char *RampModelsOBJJP[] = { "ジャンプ台1", "ジャンプ台2", "ジャンプ台3", "ジャンプ台4" };
+char *BoneList[] = { "chassis", "wheel_lf", "wheel_lr", "wheel_rf", "wheel_rr", "prop_1", "prop_2", "prop_3", "prop_4", "rotor_main", "rotor_rear", "turret_1base", "frame_1", "frame_2" };
+char *BoneStringList[] = { "本体", "タイヤ(左前)", "タイヤ(左後)", "タイヤ(タイヤ右後)", "タイヤ(タイヤ右前)", "プロペラ1", "プロペラ2" , "プロペラ3", "プロペラ4", "ヘリのプロペラ", "ヘリのプロペラ(後ろの)", "インサージェントの砲台(戦車)", "フォークリフト1", "フォークリフト2" };
+char *Effectvehicle[] = { "エフェクトなし", "エフェクトあり" };
+char *_SelectedEntity;
+char *OnlinePlayerHash[2] = { "mp_m_freemode_01", "mp_f_freemode_01" };
 BYTE HeadLightByte[] = { 0x00, 0x00, 0x00, 0x00 , 0x3E , 0xC0 , 0x00, 0x00 , 0x40 , 0x20 , 0x00 , 0x00 , 0x41 , 0x00 , 0x00 , 0x00 , 0x41 , 0xF0 , 0x00 , 0x00 , 0x42 , 0xA0 , 0x00 , 0x00 , 0xFF , 0xFF , 0x80 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 };
+char *ESPCharVar[] = { "2D", "3D" };
+char EBOOTSIZECHAR[30][16] = {"N/A"};
+char *CharacterSwap[] = { "キャラクター1", "キャラクター2" };
+char *TeleportOptions[] = { "硬直無し", "硬直有り" };
+char *SceneTP___[2];
+char *PSN_Profile[] = { "プロフィール", "フレンド依頼" };
+char *KickTypes[] = { "ノンホス", "ホスト", "ドロップ", "ディスコネクト", "エラー2" };
+char *UILabel[] = {
+	"HUD_COLOUR_PURE_WHITE",
+	"HUD_COLOUR_WHITE",
+	"HUD_COLOUR_BLACK",
+	"HUD_COLOUR_GREY",
+	"HUD_COLOUR_GREYLIGHT",
+	"HUD_COLOUR_GREYDARK",
+	"HUD_COLOUR_RED",
+	"HUD_COLOUR_REDLIGHT",
+	"HUD_COLOUR_REDDARK",
+	"HUD_COLOUR_BLUE",
+	"HUD_COLOUR_BLUELIGHT",
+	"HUD_COLOUR_BLUEDARK",
+	"HUD_COLOUR_YELLOW",
+	"HUD_COLOUR_YELLOWLIGHT",
+	"HUD_COLOUR_YELLOWDARK",
+	"HUD_COLOUR_ORANGE",
+	"HUD_COLOUR_ORANGELIGHT",
+	"HUD_COLOUR_ORANGEDARK",
+	"HUD_COLOUR_GREEN",
+	"HUD_COLOUR_GREENLIGHT",
+	"HUD_COLOUR_GREENDARK",
+	"HUD_COLOUR_PURPLE",
+	"HUD_COLOUR_PURPLELIGHT",
+	"HUD_COLOUR_PURPLEDARK",
+	"HUD_COLOUR_PINK",
+	"HUD_COLOUR_RADAR_HEALTH",
+	"HUD_COLOUR_RADAR_ARMOUR",
+	"HUD_COLOUR_RADAR_DAMAGE",
+	"HUD_COLOUR_NET_PLAYER1",
+	"HUD_COLOUR_NET_PLAYER2",
+	"HUD_COLOUR_NET_PLAYER3",
+	"HUD_COLOUR_NET_PLAYER4",
+	"HUD_COLOUR_NET_PLAYER5",
+	"HUD_COLOUR_NET_PLAYER6",
+	"HUD_COLOUR_NET_PLAYER7",
+	"HUD_COLOUR_NET_PLAYER8",
+	"HUD_COLOUR_NET_PLAYER9",
+	"HUD_COLOUR_NET_PLAYER10",
+	"HUD_COLOUR_NET_PLAYER11",
+	"HUD_COLOUR_NET_PLAYER12",
+	"HUD_COLOUR_NET_PLAYER13",
+	"HUD_COLOUR_NET_PLAYER14",
+	"HUD_COLOUR_NET_PLAYER15",
+	"HUD_COLOUR_NET_PLAYER16",
+	"HUD_COLOUR_NET_PLAYER17",
+	"HUD_COLOUR_NET_PLAYER18",
+	"HUD_COLOUR_NET_PLAYER19",
+	"HUD_COLOUR_NET_PLAYER20",
+	"HUD_COLOUR_NET_PLAYER21",
+	"HUD_COLOUR_NET_PLAYER22",
+	"HUD_COLOUR_NET_PLAYER23",
+	"HUD_COLOUR_NET_PLAYER24",
+	"HUD_COLOUR_NET_PLAYER25",
+	"HUD_COLOUR_NET_PLAYER26",
+	"HUD_COLOUR_NET_PLAYER27",
+	"HUD_COLOUR_NET_PLAYER28",
+	"HUD_COLOUR_NET_PLAYER29",
+	"HUD_COLOUR_NET_PLAYER30",
+	"HUD_COLOUR_NET_PLAYER31",
+	"HUD_COLOUR_NET_PLAYER32",
+	"HUD_COLOUR_SIMPLEBLIP_DEFAULT",
+	"HUD_COLOUR_MENU_BLUE",
+	"HUD_COLOUR_MENU_GREY_LIGHT",
+	"HUD_COLOUR_MENU_BLUE_EXTRA_DARK",
+	"HUD_COLOUR_MENU_YELLOW",
+	"HUD_COLOUR_MENU_YELLOW_DARK",
+	"HUD_COLOUR_MENU_GREEN",
+	"HUD_COLOUR_MENU_GREY",
+	"HUD_COLOUR_MENU_GREY_DARK",
+	"HUD_COLOUR_MENU_HIGHLIGHT",
+	"HUD_COLOUR_MENU_STANDARD",
+	"HUD_COLOUR_MENU_DIMMED",
+	"HUD_COLOUR_MENU_EXTRA_DIMMED",
+	"HUD_COLOUR_BRIEF_TITLE",
+	"HUD_COLOUR_MID_GREY_MP",
+	"HUD_COLOUR_NET_PLAYER1_DARK",
+	"HUD_COLOUR_NET_PLAYER2_DARK",
+	"HUD_COLOUR_NET_PLAYER3_DARK",
+	"HUD_COLOUR_NET_PLAYER4_DARK",
+	"HUD_COLOUR_NET_PLAYER5_DARK",
+	"HUD_COLOUR_NET_PLAYER6_DARK",
+	"HUD_COLOUR_NET_PLAYER7_DARK",
+	"HUD_COLOUR_NET_PLAYER8_DARK",
+	"HUD_COLOUR_NET_PLAYER9_DARK",
+	"HUD_COLOUR_NET_PLAYER10_DARK",
+	"HUD_COLOUR_NET_PLAYER11_DARK",
+	"HUD_COLOUR_NET_PLAYER12_DARK",
+	"HUD_COLOUR_NET_PLAYER13_DARK",
+	"HUD_COLOUR_NET_PLAYER14_DARK",
+	"HUD_COLOUR_NET_PLAYER15_DARK",
+	"HUD_COLOUR_NET_PLAYER16_DARK",
+	"HUD_COLOUR_NET_PLAYER17_DARK",
+	"HUD_COLOUR_NET_PLAYER18_DARK",
+	"HUD_COLOUR_NET_PLAYER19_DARK",
+	"HUD_COLOUR_NET_PLAYER20_DARK",
+	"HUD_COLOUR_NET_PLAYER21_DARK",
+	"HUD_COLOUR_NET_PLAYER22_DARK",
+	"HUD_COLOUR_NET_PLAYER23_DARK",
+	"HUD_COLOUR_NET_PLAYER24_DARK",
+	"HUD_COLOUR_NET_PLAYER25_DARK",
+	"HUD_COLOUR_NET_PLAYER26_DARK",
+	"HUD_COLOUR_NET_PLAYER27_DARK",
+	"HUD_COLOUR_NET_PLAYER28_DARK",
+	"HUD_COLOUR_NET_PLAYER29_DARK",
+	"HUD_COLOUR_NET_PLAYER30_DARK",
+		"HUD_COLOUR_NET_PLAYER31_DARK",
+		"HUD_COLOUR_NET_PLAYER32_DARK",
+	"HUD_COLOUR_BRONZE",
+		"HUD_COLOUR_SILVER",
+		"HUD_COLOUR_GOLD",
+		"HUD_COLOUR_PLATINUM",
+		"HUD_COLOUR_GANG1",
+		"HUD_COLOUR_GANG2",
+		"HUD_COLOUR_GANG3",
+		"HUD_COLOUR_GANG4",
+		"HUD_COLOUR_SAME_CREW",
+		"HUD_COLOUR_FREEMODE",
+		"HUD_COLOUR_PAUSE_BG",
+		"HUD_COLOUR_FRIENDLY",
+		"HUD_COLOUR_ENEMY",
+		"HUD_COLOUR_LOCATION",
+		"HUD_COLOUR_PICKUP",
+		"HUD_COLOUR_PAUSE_SINGLEPLAYER",
+		"HUD_COLOUR_FREEMODE_DARK",
+		"HUD_COLOUR_INACTIVE_MISSION",
+		"HUD_COLOUR_DAMAGE",
+		"HUD_COLOUR_PINKLIGHT",
+		"HUD_COLOUR_PM_MITEM_HIGHLIGHT",
+		"HUD_COLOUR_SCRIPT_VARIABLE",
+		"HUD_COLOUR_YOGA",
+		"HUD_COLOUR_TENNIS",
+		"HUD_COLOUR_GOLF",
+		"HUD_COLOUR_SHOOTING_RANGE",
+		"HUD_COLOUR_FLIGHT_SCHOOL",
+		"HUD_COLOUR_NORTH_BLUE",
+		"HUD_COLOUR_SOCIAL_CLUB",
+		"HUD_COLOUR_PLATFORM_BLUE",
+		"HUD_COLOUR_PLATFORM_GREEN",
+		"HUD_COLOUR_PLATFORM_GREY",
+		"HUD_COLOUR_FACEBOOK_BLUE",
+		"HUD_COLOUR_INGAME_BG",
+		"HUD_COLOUR_DARTS",
+		"HUD_COLOUR_WAYPOINT",
+		"HUD_COLOUR_MICHAEL",
+		"HUD_COLOUR_FRANKLIN",
+		"HUD_COLOUR_TREVOR",
+		"HUD_COLOUR_GOLF_P1",
+		"HUD_COLOUR_GOLF_P2",
+		"HUD_COLOUR_GOLF_P3",
+		"HUD_COLOUR_GOLF_P4",
+		"HUD_COLOUR_WAYPOINTLIGHT",
+		"HUD_COLOUR_WAYPOINTDARK",
+		"HUD_COLOUR_PANEL_LIGHT",
+		"HUD_COLOUR_MICHAEL_DARK",
+		"HUD_COLOUR_FRANKLIN_DARK",
+		"HUD_COLOUR_TREVOR_DARK",
+		"HUD_COLOUR_OBJECTIVE_ROUTE",
+		"HUD_COLOUR_PAUSEMAP_TINT",
+		"HUD_COLOUR_PAUSE_DESELECT",
+		"HUD_COLOUR_PM_WEAPONS_PURCHASABLE",
+		"HUD_COLOUR_PM_WEAPONS_LOCKED",
+		"HUD_COLOUR_END_SCREEN_BG",
+		"HUD_COLOUR_CHOP",
+		"HUD_COLOUR_PAUSEMAP_TINT_HALF",
+		"HUD_COLOUR_NORTH_BLUE_OFFICIAL",
+		"HUD_COLOUR_SCRIPT_VARIABLE_2",
+		"HUD_COLOUR_H",
+		"HUD_COLOUR_HDARK",
+		"HUD_COLOUR_T",
+		"HUD_COLOUR_TDARK",
+		"HUD_COLOUR_HSHARD",
+		"HUD_COLOUR_CONTROLLER_MICHAEL",
+		"HUD_COLOUR_CONTROLLER_FRANKLIN",
+		"HUD_COLOUR_CONTROLLER_TREVOR",
+		"HUD_COLOUR_CONTROLLER_CHOP",
+		"HUD_COLOUR_VIDEO_EDITOR_VIDEO",
+		"HUD_COLOUR_VIDEO_EDITOR_AUDIO",
+		"HUD_COLOUR_VIDEO_EDITOR_TEXT",
+		"HUD_COLOUR_HB_BLUE",
+		"HUD_COLOUR_HB_YELLOW",
+		"HUD_COLOUR_VIDEO_EDITOR_SCORE",
+		"HUD_COLOUR_VIDEO_EDITOR_AUDIO_FADEOUT",
+		"HUD_COLOUR_VIDEO_EDITOR_TEXT_FADEOUT",
+		"HUD_COLOUR_VIDEO_EDITOR_SCORE_FADEOUT",
+		"HUD_COLOUR_HEIST_BACKGROUND",
+		"HUD_COLOUR_VIDEO_EDITOR_AMBIENT",
+		"HUD_COLOUR_VIDEO_EDITOR_AMBIENT_FADEOUT",
+		"HUD_COLOUR_GB",
+		"HUD_COLOUR_G",
+		"HUD_COLOUR_B",
+		"HUD_COLOUR_LOW_FLOW",
+		"HUD_COLOUR_LOW_FLOW_DARK",
+		"HUD_COLOUR_G1",
+		"HUD_COLOUR_G2",
+		"HUD_COLOUR_G3",
+		"HUD_COLOUR_G4",
+		"HUD_COLOUR_G5",
+		"HUD_COLOUR_G6",
+		"HUD_COLOUR_G7",
+		"HUD_COLOUR_G8",
+		"HUD_COLOUR_G9",
+		"HUD_COLOUR_G10",
+		"HUD_COLOUR_G11",
+		"HUD_COLOUR_G12",
+		"HUD_COLOUR_G13",
+			"HUD_COLOUR_G14",
+			"HUD_COLOUR_G15",
+		"HUD_COLOUR_ADVERSARY",
+			"HUD_COLOUR_DEGEN_RED",
+			"HUD_COLOUR_DEGEN_YELLOW",
+			"HUD_COLOUR_DEGEN_GREEN",
+			"HUD_COLOUR_DEGEN_CYAN",
+			"HUD_COLOUR_DEGEN_BLUE",
+			"HUD_COLOUR_DEGEN_MAGENTA",
+			"HUD_COLOUR_STUNT_1",
+			"HUD_COLOUR_STUNT_2",
+			"HUD_COLOUR_SPECIAL_RACE_SERIES",
+			"HUD_COLOUR_SPECIAL_RACE_SERIES_DARK",
+			"HUD_COLOUR_CS",
+			"HUD_COLOUR_CS_DARK",
+			"HUD_COLOUR_TECH_GREEN",
+			"HUD_COLOUR_TECH_GREEN_DARK",
+			"HUD_COLOUR_TECH_RED",
+			"HUD_COLOUR_TECH_GREEN_VERY_DARK"
+
+};
 char *WEAPONCOMPONENT[] = {
 	"COMPONENT_AT_RAILCOVER_01",
 	"COMPONENT_AT_AR_AFGRIP", 
@@ -120,6 +522,7 @@ char *WEAPONCOMPONENT2[] = {
 	"ASSAULTSMG マガジン2" ,
 	"BULLPUPSHOTGUN マガジン"
 };
+char* ShootVehicleChar[] = { "adder", "dune2", "bati2", "savage", "besra", "bmx", "cutter" };
 char *WEAPONMENU[] = {
 	"WEAPON_KNIFE","WEAPON_NIGHTSTICK","WEAPON_HAMMER","WEAPON_BAT","WEAPON_GOLFCLUB",
 	"WEAPON_CROWBAR","WEAPON_PISTOL","WEAPON_COMBATPISTOL","WEAPON_APPISTOL","WEAPON_PISTOL50","WEAPON_MICROSMG","WEAPON_SMG","WEAPON_ASSAULTSMG","WEAPON_ASSAULTRIFLE",
@@ -142,15 +545,51 @@ char *ApartMentHouseJpn[] = { "アパート1", "アパート2","アパート3", 
 char *MapObjectsList[] = { "ap1_01_a_keepclear", "prop_towercrane_01a", "prop_pylon_04", "dt1_11_dt1_tower","ce_xr_ctr2","prop_cs_book_01","prop_coke_block_01","prop_coke_block_half_b","prop_cs_box_clothes","prop_cs_box_step","prop_cs_cardbox_01" };
 char *MapObjJapanese[] = { "Keep Clear", "タワークレーン", "電柱", "メイズバンク","でかい木のたる","変な看板","ヤク でかいやつ","ヤク 半分こ","ダンボール1","ダンボール2","ダンボール3" };
 
-char *ColorMessageJapanese[] = { "無し","~r~赤","~b~青","~g~緑","~y~黄色","~p~紫","~o~オレンジ","~c~グレー","~m~ダークグレー","~u~黒","~s~白","~d~ダークブルー","~f~ライトブルー","~l~黒","~t~グレー","~v~黒" };
+char *ColorMessageJapanese[] = { "~r~赤","~b~青","~g~緑","~y~黄色","~p~紫","~o~オレンジ","~c~グレー","~m~ダークグレー","~u~黒","~s~白","~d~ダークブルー","~f~ライトブルー","~l~黒","~t~グレー","~v~黒" };
 
-char *ColorMessageList[] = { "","~r~","~b~","~g~","~y~","~p~","~o~","~c~","~m~","~u~","~s~","~d~","~f~","~l~","~t~","~v~" };
+char *ColorMessageList[] = { "~r~","~b~","~g~","~y~","~p~","~o~","~c~","~m~","~u~","~s~","~d~","~f~","~l~","~t~","~v~" };
+
+uint tekitouOBJ[] = { 0xF249C94A, 0x1BBBAC6E,0xC2A63045, 0xFC96F411, 0x8BBC9B70, 0x3FC3D20B, 0xC972C9D5, 0x8D9D44C5, 0xE2AA93CA, 0xAE8D2FA8, 0x28A7A0B9, 0xCB96A831, 0xC972C9D5, 0x9B862E76, 0x8E1E7CCF, 0xED82C057, 0x6D74805F, 0xE6C76E5E, 0xEC6F1F55, 0x721CCCB4, 0x69381681, 0x74219CCB, 0x3B9E6ECC, 0xD1FBB176, 0x3DD687F3, 0xE73BD4BB, 0x7ADD3EEB, 0xBA03C5B0, 0x4E42C1FF, 0x94D33AA7, 0x376CB307, 0x55A8CF2A, 0x1EF861CE, 0x41b42bfb, 0xda76fe6e, 0x708D300F, 0x73E498DB, 0xC2451209, 0x9C762726, 0x98d3236b, 0x18c49531 };
+
+char *ObjectTekitou2JP[] = { "オレンジボール", "3つ重なったタイヤ", "赤色の廃車", "1本の蛍光灯（光り物）", "青色の廃車（バイク）", "赤色の廃車2（屋根無しトルネードっぽい）", "ホームレスの簡易的な家", "工事現場のまとめられたパイプ", "ダンプの後ろの荷台（上がった状態）", "赤のコンテナ（小）", "ゴミ入りのゴミ袋", "風向計", "小さいランプ（光り物）", "青色の廃バス", "緑のコンテナのドア（左）", "緑のコンテナのドア（右）", "有刺鉄線付きのフェンス", "ポンプジャック", "海に浮かんでる光るブイ", "コンクリート（赤白）の車止め", "カバーをかけられたチーター", "カバーをかけられたXF", "カバーをかけられたjb700", "カバーをかけられたZタイプ", "何かの積荷" };
+char *ObjectTekitou2[] = { "prop_juicestand", "prop_rub_pile_04", "prop_rub_carwreck_11", "prop_wall_light_17a", "prop_rub_bike_03", "prop_rub_carwreck_10", "prop_homeles_shelter_01", "prop_pipes_01b", "prop_trailer01_up", "prop_container_05a", "prop_rub_binbag_03b", "prop_rural_windmill", "prop_construcionlamp_01", "prop_rub_buswreck_06", "prop_container_door_mb_l", "prop_container_door_mb_r", "prop_fnclink_05b", "p_oil_pjack_02_s", "prop_dock_bouy_3", "prop_barier_conc_05b", "prop_cheetah_covered", "prop_entityxf_covered", "prop_jb700_covered", "prop_ztype_covered", "hei_prop_carrier_cargo_03a" };
+
+char *ObjectTekitou3JP[] = { "木のボート", "木のボート（薄くて小さい）", "鉄（？）のボート", "サーフボード（白青）埋ver.", "サーフボード（白赤）埋ver.", "サーフボード（白赤黄）埋ver.", "サーフボード（白赤青）埋ver.", "サーフボード（白青）", "サーフボード（白赤）", "サーフボード（白赤黄）", "サーフボード（白赤青）", "サーフボード「Lessons」", "サーフボード「Repairs」", "サーフボード（木）", "黒ずんだホワイトボード 足有ver.", "黒ずんだホワイトボード 足無ver." };
+char *ObjectTekitou3[] = { "prop_byard_rowboat1", "prop_byard_rowboat3", "prop_byard_rowboat4", "prop_surf_board_01", "prop_surf_board_02", "prop_surf_board_03", "prop_surf_board_04", "prop_surf_board_ldn_01", "prop_surf_board_ldn_02", "prop_surf_board_ldn_03", "prop_surf_board_ldn_04", "prop_venice_board_01", "prop_venice_board_02", "prop_venice_board_03", "prop_w_board_blank", "prop_w_board_blank_2" };
+
+Hash PedBoneHash[] = { SKEL_ROOT , -1, SKEL_Head , SKEL_R_Hand , SKEL_L_Hand, SKEL_R_UpperArm, SKEL_L_UpperArm };
+char *PedBoneList[] = { "中心部", "中心部(2)", "頭", "右手", "左手", "右肩", "左肩" };
+
+char *SmallBigChar[] = { "小", "中", "大" };
+
+char *ObjectTekitou4JP[] = { "標識-工事中", "標識-「WFSV」", "標識-「PRP」", "長カラーコーン（赤白） 重り有ver.", "長カラーコーン（赤白） 重り無ver.", "長カラーコーン（赤）重り無ver.", "短カラーコーン（赤白）重り有ver.", "短カラーコーン（赤白）重り無ver.", "短カラーコーン（赤）重り無ver.", "標識-「STOP」", "標識-「DNE」", "標識-「DNBI」", "標識-「左折禁止」", "標識-「左折」", "標識-「親子」", "標識-「右折」", "標識-「牛」", "標識-「スピードリミット15」", "標識-「スピードリミット25」", "標識-「スピードリミット35」", "標識-「スピードリミット50」", "標識-「スピードリミット60」", "標識-「左矢印」", "標識-「右矢印」", "看板-「SALE」" };
+char *ObjectTekitou4[] = { "prop_consign_01a", "prop_consign_01b", "prop_consign_01c", "prop_roadcone01a", "prop_roadcone01b", "prop_roadcone01c", "prop_roadcone02a", "prop_roadcone02b", "prop_roadcone02c", "prop_sign_road_01b", "prop_sign_road_03a", "prop_sign_road_03e", "prop_sign_road_03l", "prop_sign_road_05c", "prop_sign_road_05b", "prop_sign_road_05d", "prop_sign_road_05h", "prop_sign_road_06a", "prop_sign_road_06d", "prop_sign_road_06e", "prop_sign_road_06f", "prop_sign_road_06g", "prop_sign_road_09c", "prop_sign_road_09d", "prop_venice_sign_03" };
+
+char *InvincibleChar[] = { "v1", "v2" };
+
+char *ObjectTekitou5JP[] = { "青のコンテナ（中）", "緑のコンテナ（中）", "メリーウェザーの赤のコンテナ（小）", "赤のコンテナ（大）片方ドア無ver.", "赤のコンテナ（大）", "大きい弾薬", "酒入り冷蔵庫", "赤のコーラの自販機", "赤のコーラの自販機", "カナダの国旗（大）", "カナダの国旗（小）", "欧州旗（EU）（大）", "欧州旗（EU）（小）", "フランスの国旗（大）", "フランスの国旗（小）", "ドイツの国旗（大）", "ドイツの国旗（小）", "アリルランドの国旗（大）", "アイルランドの国旗（小）", "日本の国旗（大）", "日本の国旗（小）", "ロスサントスの旗", "ロスサントスの旗", "消防署の旗（大）", "消防署の旗（小）", "lsサービスの旗（大）", "lsサービスの旗（小）", "メキシコの国旗（大）", "メキシコの国旗（小）", "ロシアの国旗（大）", "ロシアの国旗（小）", "サンアンドレアスの旗", "サンアンドレアスの旗（小）", "サンアンドレアス警察の旗（大）", "サンアンドレアス警察の旗（小）", "スコットランドの国旗（大）", "スコットランドの国旗（小）", "保安官事務所の旗（大）", "保安官事務所の旗（小）", "イギリスの国旗（大）", "イギリスの国旗（小）", "アメリカの国旗（大）1", "アメリカの国旗（大）2", "アメリカの国旗（小）", "アメリカの国旗（大）3", "アメリカの国旗（大）4" };
+char *ObjectTekitou5[] = { "prop_container_03b", "prop_container_03mb", "prop_container_ld_pu", "prop_container_ld", "prop_container_ld2", "v_ret_gc_bullet", "v_ret_ml_fridge", "prop_vend_soda_01", "prop_vend_soda_02", "prop_flag_canada","prop_flag_canada_s", "prop_flag_eu", "prop_flag_eu_s", "prop_flag_france", "prop_flag_france_s", "prop_flag_german", "prop_flag_german_s", "prop_flag_ireland", "prop_flag_ireland_s", "prop_flag_japan", "prop_flag_japan_s", "prop_flag_ls", "prop_flag_ls_s", "prop_flag_lsfd", "prop_flag_lsfd_s", "prop_flag_lsservices", "prop_flag_lsservices_s", "prop_flag_mexico", "prop_flag_mexico_s", "prop_flag_russia", "prop_flag_russia_s", "prop_flag_sa", "prop_flag_sa_s", "prop_flag_sapd", "prop_flag_sapd_s", "prop_flag_scotland", "prop_flag_scotland_s", "prop_flag_sheriff", "prop_flag_sheriff_s", "prop_flag_uk", "prop_flag_uk_s", "prop_flag_us", "prop_flag_us_r", "prop_flag_us_s", "prop_flag_usboat", "prop_flagpole_2b" };
+char *ScrapList[] = { "prop_rub_carwreck_9", "prop_rub_carwreck_7", "prop_rub_carwreck_2", "prop_rub_carwreck_8", "prop_rub_buswreck_06" };
+char *ScrapListJP[] = { "スクラップ1", "スクラップ2", "スクラップ3", "スクラップ4", "スクラップ5" };
+
+char *BiribiriObj[] = { "prop_elecbox_12", "prop_sub_trans_02a", "prop_byard_rowboat1", "prop_byard_rowboat3", "prop_byard_rowboat4", "prop_windmill_01", "prop_mb_sandblock_01", "prop_ind_barge_02", "prop_dock_crane_04", "ch2_03_sign_slod", "prop_parasol_04", "prop_parasol_04b", "prop_dock_crane_02", "prop_mr_raspberry_01", "prop_cs_katana_01", "prop_boxing_glove_01", "prop_cs_dildo_01", "prop_air_stair_01", "prop_air_stair_02", "prop_minigun_01", "prop_fireescape_01a", "prop_dock_rtg_01", "prop_ind_barge_01", "prop_dock_crane_01","prop_spot_01", "v_prop_floatcandle", "prop_helipad_02", "prop_helipad_01", "prop_steps_big_01", "prop_vintage_pump", "prop_wall_light_07a", "prop_wall_light_05c", "prop_streetlight_12a", "prop_table_02", "prop_chair_05", "prop_patio_lounger1", "prop_table_07", "prop_wall_light_02a", "prop_parasol_05", "prop_air_sechut_01", "prop_garden_zapper_01", "prop_byard_boat01", "prop_gascyl_02a", "prop_storagetank_02b", "prop_rub_t34", "prop_ld_toilet_01", "hei_prop_carrier_docklight_01", "hei_prop_carrier_docklight_02", "hei_prop_heist_magnet", "prop_lifeblurb_02","prop_lifeblurb_01", "prop_lifeblurb_02b", "prop_lifeblurb_01b", "prop_mb_hesco_06", "prop_mr_rasberryclean", "prop_ld_firmset", "prop_toiletfoot_static", "prop_shamal_crash", "prop_mp_num_0", "prop_mp_num_1", "prop_mp_num_2", "prop_mp_num_3", "prop_mp_num_4", "prop_mp_num_5", "prop_mp_num_6", "prop_mp_num_7", "prop_mp_num_8", "prop_mp_num_9", "prop_ld_bomb_anim", "prop_mp_icon_shad_sm", "prop_mp_icon_shad_med", "prop_mp_icon_shad_lrg", "prop_jet_bloodsplat_01", "prop_sam_01", "prop_mp_max_out_sm", "prop_mp_max_out_med", "prop_mp_max_out_lrg", "prop_arcade_02"};
+char *BiribiriObjJPN[] = { "電気ビリビリ（小）", "電気ビリビリ（大）", "木のボート", "木のボート（薄くて小さい）", "鉄（？）のボート", "風力発電の風車", "砂入りの四角ブロック", "艀（はしけ）（細長）", "港のクレーン（小）", "「VINEWOOD」看板", "ビーチパラソル（赤黄）", "ビーチパラソル（青白）", "港のクレーン（大）", "トレバーの熊（片目無）", "日本刀", "ボクシンググローブ", "ディルド", "flyU6の階段", "空港の階段", "ミニガン", "非常階段の1部", "港のクレーン（特大）", "艀（はしけ）（太短）", "港のクレーン（超特大）", "スポットライト", "ロウソク", "ヘリポート（四角）", "ヘリポート（円）", "ハシゴ", "田舎のガソスタ", "オシャレなライト", "少し太い蛍光灯", "街灯", "丸いテーブル", "椅子", "ビーチチェア", "丸いテーブル（小）", "ライト（四角）", "オシャレなパラソル", "警備員が居る所", "壊れたライト", "青と白のボート", "ボンベ（アセチレン）", "タンク（アセトン）", "壊れたT34（戦車）", "トイレ", "港の赤点滅ライト1", "港の赤点滅ライト2", "マグネット", "LI看板1（黒白）", "LI看板2（黒白）", "LI看板3（赤白）", "LI看板2（黒白）", "米軍訓練用建造物", "トレバーの熊（両目有）", "×××", "曲がった足", "シャマール-墜落", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "爆撃用爆弾", "丸い影（小）", "丸い影（中）", "丸い影（大）", "人間inジェットエンジン", "地対空ミサイル", "びっくりマーク（小）", "びっくりマーク（中）", "びっくりマーク（大）", "アーケードゲーム" };
+
+char *TekitouObj2[] = { "prop_byard_ramp", "prop_portasteps_02", "hei_prop_carriar_defense_01", "hei_prop_carrier_defense_02", "hei_prop_carrier_rader_1", "hei_prop_carrier_rader_2", "prop_roofvent_14a", "prop_fireescape_01a", "prop_fireescape_02a", "prop_fireescape_01b" };
+
+char *hikarimonodiamond[] = {"ap1_03_tubeolay_", "ap1_03_tubeolay_001", "ap1_03_tubeolay_002", "ap1_03_tubeolay_003", "ap1_03_tubeolay_004", "ap1_03_tubeolay_005", "ap1_03_tubeolay_006"};
+char *hikarimonodiamondJP[] = { "ピンク", "赤", "黄色", "白", "紫", "水色", "桃色" };
+char *doAnimation_Animdict;
+char *doAnimation_AnimID;
 
 char *RPListChar_[] = { "-1000 RP","-5000 RP","-10000 RP","-50000 RP","-100000 RP","-200000 RP","-500000 RP","-1000000 RP" };
 char *RPListChar[] = { "1000 RP","5000 RP","10000 RP","50000 RP","100000 RP","200000 RP","500000 RP","1000000 RP" };
 char *AttachObjectID;
-char *UnusedObj1[] = { "p_spinning_anus_s", "prop_xmas_ext", "prop_xmas_tree_int", "p_cablecar_s", "prop_sculpt_fix", "p_v_43_safe_s", "prop_large_gold",  "prop_crashed_heli", "prop_ld_ferris_wheel", "p_tram_crash_s","armytrailer" };
-char *UnusedObjJp1[] = { "UFO", "巨大ツリー", "ミニツリー", "ケーブルカー", "ビーチにあるオブジェクト", "金庫", "金塊のケース", "壊れたヘリ", "観覧車", "ローポリ電車","トレーラー" };
+char *UnusedObj1[] = { "p_spinning_anus_s", "prop_xmas_ext", "prop_xmas_tree_int", "p_cablecar_s", "prop_sculpt_fix", "p_v_43_safe_s", "prop_large_gold",  "prop_crashed_heli", "prop_ld_ferris_wheel", "p_tram_crash_s","armytrailer", "prop_mb_ordnance_02", "prop_juicestand" };
+char *UnusedObjJp1[] = { "UFO", "巨大ツリー", "ミニツリー", "ケーブルカー", "でかいやつ", "金庫", "金塊のケース", "壊れたヘリ", "観覧車", "ローポリ電車","トレーラー", "ミサイル", "オレンジボール" };
+
+char *LightingObj[] = { "hei_prop_wall_alarm_on", "prop_wall_light_05a", "prop_air_lights_05a" };
+char *LightingObjJP[] = { "ライト ~r~(赤)~w~", "ライト (白)", "ライト ~b~(青)~w~" };
 
 char *ForMapModObj1[] = { "prop_rail_boxcar", "prop_rail_boxcar3", "prop_rail_boxcar4", "prop_rail_boxcar5", "prop_container_01b" };
 char *ForMapModObjJp1[] = { "貨物車", "貨物車2", "貨物車3", "貨物車(Object Bypass)", "コンテナ(Object Bypass)" };
@@ -158,6 +597,17 @@ char *ForMapModObjJp1[] = { "貨物車", "貨物車2", "貨物車3", "貨物車(
 char *ForVehAttach1[] = { "hei_prop_heist_emp","prop_wheelchair_01", "p_parachute1_s", "prop_alien_egg_01", "prop_dummy_plane",  "prop_bowling_ball", "prop_beach_fire", "prop_roller_car_01", "p_res_sofa_l_s" };
 char *VehAttJapanse1[] = { "EMP", "車いす", "パラシュート", "卵", "おもちゃの飛行機",  "ボーリングの弾" , "たき火", "ジェットコースター","ソファ" };
 char *Vehicle_String;
+
+char *Low_Tecture_String[] = { "安定", "弱め", "やや弱め", "中", "強め"};
+char *Low_Texture_Strin9[] = { "cinema_001", "LODmult_HD_orphan_reduce", "LODmult_LOD_reduce", "LODmult_SLOD1_reduce", "LODmult_global_reduce_NOHD", "LODmult_SLOD2_reduce", "LODmult_SLOD3_reduce" };
+
+int ScrollSpeed[] = { 130, 90, 60 };
+char *ScrollSpeedVar[] = { "普通", "やや早い", "早い" };
+
+char *COLOR_ESP[] = {"赤", "緑", "青", "黄色", "ピンク", "水色"};
+RGBA COLOR_ESP_COLOR[] = { {255, 0, 0, 255}, {0, 255, 0, 255}, {0, 0, 255, 255}, {255, 255, 0, 255}, {180, 0, 180, 255}, {0, 0, 100, 255} };
+char *Tire_Color_[] = { "赤", "緑", "青", "黄色", "ピンク", "水色", "虹色" };
+
 char *WEAPONJAPANESE[] = {
 	"ナイフ","警棒","ハンマー","バット","ゴルフクラブ",
 	"バール","ピストル","コンバットピストル","APピストル","50口径ピストル","マイクロSMG","SMG","アサルトSMG","アサルトライフル",
@@ -199,13 +649,15 @@ char *Trailers[] = { "armytanker", "armytrailer", "armytrailer2", "baletrailer",
 char *Boat[] = { "marquis", "jetmax", "squalo", "suntrap", "tropic", "seashark", "seashark2", "predator", "submersible", "speeder", "dinghy", "dinghy2", "dinghy3", "toro" };
 
 char hex2buf[32];
-
+char TeleportBuf[60];
+char VehicleBuf[50];
+char *_PlayerUI_String[] = { "プレイヤー関係でのみ表示", "どこでも表示", "非表示" };
 char *BONSCH[] = { "Head", "Neck", "Tongue", "Spine", "Left Clavicle", "Right Clavicle", "Left Hand", "Right Hand", "Left Upperarm", "Right Upperarm", "Left Knee", "Right Knee", "Left Foot", "Right Foot" };
-char* ShootVehicleChar[] = { "adder", "dune2", "bati2", "savage", "besra", "bmx", "cutter" };
+
 char* GetShotVehicle;
 char *ESPColor[] = { "赤","緑","青" };
-char *CHANGEMenu[] = { "晴天", "吹雪", "快晴", "雲", "晴天2", "曇り", "緑色", "曇り2", "雨", "霧", "雪", "天気雪", "雷" };
-char *CHANGEhsh[] = { "CLEAR","BLIZZARD", "CLEARING", "CLOUDS", "EXTRASUNNY", "FOGGY",  "NEUTRAL", "OVERCAST","RAIN","SMOG","SNOW","SNOWLIGHT","THUNDER" };
+char *WalkType[] = { "しゃがむ", "男歩き", "女歩き", "泥酔", "登山家", "ランニング", "怪我人", "筋トレ" };
+char *_WalkType[] = { "move_m@generic", "move_f@generic", "move_m@drunk@verydrunk", "move_m@hiking", "move_f@film_reel", "move_m@injured", "move_m@business@a" };
 char *AnimaMenu2[] = { "mini@strip_club@pole_dance@pole_dance1", "mini@strip_club@private_dance@part1", "mini@strip_club@pole_dance@pole_dance2", "mini@strip_club@pole_dance@pole_a_2_stage", "mini@strip_club@pole_dance@pole_b_2_stage", };
 char *AnimaMenu2A[] = { "creatures@rottweiler@amb@", "creatures@rottweiler@amb@", "creatures@rottweiler@amb@world_dog_sitting@base", "creatures@cougar@melee@streamed_core@", "creatures@cougar@amb@world_cougar_rest@base", };
 char *AnimaMenu2SI[] = { "veh@bicycle@bmx@front@base", "timetable@michael@on_sofabase", "rcmminute2", "switch@michael@sitting", "veh@common@car@ds", };
@@ -225,8 +677,10 @@ char *InfamousDict, *InfamousAnim;
 char *TestOBJ = "prop_ld_test_01";
 char *adderbytes;
 char *dune2bytes;
-char *BoneList[] = { "chassis", "wheel_lf", "wheel_rf", "wheel_lr", "wheel_rr", "wing_rf", "wing_lf" };
-char *BoneStringList[] = { "本体", "タイヤ(左前)", "タイヤ(左後)", "タイヤ(タイヤ右後)", "タイヤ(タイヤ右前)", "羽(右前)", "羽(左前)" };
+//char *BoneList[] = { "chassis", "wheel_lf", "wheel_rf", "wheel_lr", "wheel_rr", "wing_rf", "wing_lf" };{ "本体", "タイヤ(左前)", "タイヤ(右前)", "タイヤ(左後ろ)", "タイヤ(右後ろ)", "wing_rf", "wing_lf", "wing_l", "wing_r" };
+
+char *Create_Map_string;
+char *Create_Map_strings;
 char *PedName2; char* PedName;
 char buffer[] = { 72,244,36,0,58,35,13,
 182,
@@ -6973,3 +7427,24 @@ char WaterAddressMap[] = {
 	0,
 	0
 };
+char TesterBuf[100];
+char *menuOptions[300];
+char SessionHST[100];
+char SessionBuf[100];
+char SessionNum[30];
+char *HostN;
+
+char* OnOffBufReturn(char* cheat, bool b)
+{
+	char buf[100];
+	const char *bue = (b == true) ? "~g~有効" : "~r~無効";
+	strcpy(buf, "");
+	strcat(buf, "~y~");
+	strcat(buf, cheat);
+	strcat(buf, "~w~");
+	strcat(buf, "を");
+	strcat(buf, bue);
+	strcat(buf, "~w~");
+	strcat(buf, "にしました。");
+	return buf;
+}

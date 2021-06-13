@@ -162,6 +162,21 @@ namespace PS3
 		return Byte;
 	}
 
+	float Read_Global_Float(int a_uiGlobalID)
+	{
+		int Ptr = *(int*)((0x1E70374 - 0x04)+(((a_uiGlobalID / 0x40000) & 0x3F) * 4));
+		if (Ptr != 0)
+			return *(float*)(Ptr + ((a_uiGlobalID % 0x40000) * 4));
+		return 0;
+	}
+
+	char *Read_Global_Char(int a_uiGlobalID)
+	{
+		int Ptr = *(int*)((0x1E70374 - 0x04)+(((a_uiGlobalID / 0x40000) & 0x3F) * 4));
+		if (Ptr != 0)
+			return ReadBytes((Ptr + ((a_uiGlobalID % 0x40000) * 4)), 0x10);
+		return 0;
+	}
 
 	int Read_Global(int a_uiGlobalID) 
 	{
@@ -174,6 +189,21 @@ namespace PS3
 			CCC2 = *(int*)BBB2;
 
 			return CCC2;
+		}
+		return 0;
+	}
+
+	int Read_Global_Address(int a_uiGlobalID)
+	{
+		int BBB2, CCC2, Ptr;
+		Ptr = *(int*)((0x1E70374 - 0x04) + (((a_uiGlobalID / 0x40000) & 0x3F) * 4));
+		if (Ptr != 0)
+		{
+			//PRINT(ItoS(Ptr), 2000);
+			
+			//CCC2 = *(int*)BBB2;
+
+			return Ptr + ((a_uiGlobalID % 0x40000) * 4);
 		}
 		return 0;
 	}
@@ -196,7 +226,6 @@ namespace PS3
 		{
 			//PRINT(ItoS(Ptr), 2000);
 			BBB2 = Ptr + ((a_uiGlobalID % 0x40000) * 4);
-			NotifyDown(ItoS(BBB2,true),5000);
 		}
 	}
 
@@ -215,6 +244,7 @@ namespace PS3
 		return false;
 	}
 
+
 	void WriteString(int address, char* string)
 	{
 		int strlength = std::strlen(string);
@@ -224,13 +254,7 @@ namespace PS3
 		}
 		WriteByte(address + strlength, '\0');
 	}
-	char *Read_Global_Char(int a_uiGlobalID)
-	{
-		int Ptr = *(int*)((0x1E70370)+(((a_uiGlobalID / 0x40000) & 0x3F) * 4));
-		if (Ptr != 0)
-			return ReadBytes((Ptr + ((a_uiGlobalID % 0x40000) * 4)), 0x10);
-		return 0;
-	}
+
 	void WriteString2(int address, char* string)
 	{
 		int FreeMem = 0x1D00000;

@@ -4,18 +4,28 @@ typedef unsigned char BYTE;
 typedef unsigned long DWORD;
 typedef int32_t Int;
 typedef float Float;
+union ScriptArg
+{
+	unsigned int ui; float f; int i; char *str;
+};
+
+typedef struct CPlayerInfo { int unk0; int unk1; char unk2[16]; int unk3; char unk4[8]; int unk5; int unk6; int unk7; int unk8; };
 typedef struct { float Lx; float Ly; float Rx; float SizeX; float SizeY; } Vector5;
 typedef struct { float x; float y; float z; } Vector3;
 typedef struct { float x; float y; float z; float w; } Vector4;
 typedef struct { float x; float y; } Vector2;
 typedef struct { float LocX; float LocY; float SizeX; float SizeY; float Rotation; } Sizes;
 typedef struct { float Lx; float Ly; float Lz; float Rx; float Ry; float Rz; } Vector6;
+typedef struct { int R, G, B; } RGB;
 typedef struct { int R, G, B, A; } RGBA;
 typedef struct { float R, G, B, A; } RGBAF;
 typedef struct { int x; int y; int z; } Vector3Int;
 typedef struct { float Lx; float Ly; float Lz; float Rx; float Ry; float Rz; char* objectname; int Hash; int Hash2; } ObjectSpawnVector6;
+typedef char* string;
 typedef uint32_t BOOL;
 typedef void* Void;
+typedef _LONGLONG longlong;
+typedef _ULONGLONG ulonglong;
 typedef uint32_t Any;
 typedef uint32_t Hash;
 typedef uint32_t Player;
@@ -28,21 +38,103 @@ typedef Entity Vehicle;
 typedef Entity Object;
 typedef Entity ScrHandle;
 typedef uint32_t Cam;
+typedef uint32_t* unknown1;
 typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef struct { uint a1; uint a2; uint a3; uint a4; } Unknowns;
 typedef unsigned long ulong;
+struct ObjAttach
+{
+	bool flag;
+	Hash _Hash;
+	Entity _Entity;
+	Vector3 _Loc;
+	Vector3 _Rot;
+	int _Bone;
+	bool Collision;
+
+
+	Entity _Spawned;
+};
+
+struct TPtoMe2
+{
+	Vector3 Coord;
+	int Timer;
+	Entity _Player;
+	Entity _Entity;
+};
+
+OPD_s RTA(int a_iAddress) {
+	OPD_s RTS = { a_iAddress, 0x1C85330 };
+	return RTS;
+}
+
+typedef void(__stdcall * _FuncA)(void);
+_FuncA FuncA;
+
+OPD_s fooo = { 0x10054F00, 0x10055000 };
+
+void(*foo)(void) = (void(*)())0x10054F00;
+
+OPD_s GameTimeStub = { 0x1042C80, 0x1C85330 };
+void(*pGameTimeFn)(int H, int M, int S) = (void(*)(int, int, int))&GameTimeStub;
+OPD_s GameTimeSyncStub = { 0x12C2960, 0x1C85330 };
+void(*pGameTimeSyncFn)(int r3, int r4) = (void(*)(int, int))&GameTimeSyncStub; //0, 1
+void setlobbytimeNoHOST(int H, int M, int S)
+{
+	pGameTimeFn(H, M, S);
+	pGameTimeSyncFn(2, 0);
+}
+Vector3 newVector3(float x, float y, float z)
+{
+	Vector3 rt = {x, y, z};
+	return rt;
+}
+
+RGBA newRGBA(int R, int G, int B, int A)
+{
+	RGBA _RGBA = { R, G, B, A };
+	return _RGBA;
+}
+
 static void SET_PED_CAN_RAGDOLL(Ped PedHandle, BOOL Toggle) { invoke<Void>(0xCF1384C4, PedHandle, Toggle); } // 0xCF1384C4
 static int NETWORK_CREATE_SYNCHRONISED_SCENE_A(float x, float y, float z, float xRot, float yRot, float zRot, int p6, int p7, int p8, float p9) { return invoke<int>(0xB06FE3FE, x, y, z, xRot, yRot, zRot, p6, p7, p8, p9); } // 0xB06FE3FE
 static void NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE_A(Ped ped, int netScene,char *animDict, char *animnName, float speed, float speedMultiplier,int duration, int flag, float playbackRate, Any p9) { invoke<Void>(0xB386713E, ped, netScene, animDict, animnName, speed, speedMultiplier, duration, flag, playbackRate, p9); } // 0xB386713E
 static void NETWORK_ATTACH_SYNCHRONISED_SCENE_TO_ENTITY(Any p0, Any p1, Any p2) { invoke<Void>(0x3FE5B222, p0, p1, p2); } // 0x3FE5B222	
 static void ATTACH_ENTITY_TO_ENTITY_A(int what_attach, int player_ped_id, int os, float* xyz, float* xyz_rotation, int p2, int p3, int p4, int p5, int p6, int p7) { invoke<Void>(0xEC024237, what_attach, player_ped_id, os, xyz, xyz_rotation, p2, p3, p4, p5, p6, p7); } // 0xEC024237
+
 OPD_s _0x12C8CC0_t = { 0x12C8CC0, 0x1C85330 };
 unsigned int(*_0x12C8CC0)(unsigned int r3, unsigned int senderData, unsigned int recieverData, unsigned int r6, unsigned int r7, unsigned int r8, unsigned int r9) = (unsigned int(*)(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int))&_0x12C8CC0_t;
+OPD_s GetLabelTextByGXTFunc_t = { 0xD9145C, 0x1C85330 };
+int(*GetLabelTextByGXTFunc)(int a_iPoifnter, char* a_cLabelName) = (int(*)(int, char*))&GetLabelTextByGXTFunc_t;
+int GetLabelTextByGXT(char* a_cLabelName) {
+	return GetLabelTextByGXTFunc(0x20668B0, a_cLabelName);
+}
+OPD_s _Address_t = { 0x3C07CC, 0x1C85330 };
+unsigned int(*GET_TEXTURE_ADDRESS)(char* dict, char* name) = (unsigned int(*)(char*, char*))&_Address_t;
+OPD_s snprintf_stub = { 0x14FDD3C, 0x1C85330 };
+int(*snprintf___)(char * s, size_t n, const char * format, ...) = (int(*)(char*, size_t, const char*, ...))&snprintf_stub;
+
+OPD_s Parser7 = { 0xA199C0, 0x1C85330 };
+unsigned int(*HOST_SCRIPT_FUNCS)(unsigned int r3, unsigned int r4, unsigned int r5, unsigned int r6, unsigned int r7) = (unsigned int(*)(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int))&Parser7;
+int(*HOST_SCRIPT_FUNCS_1)(int a_dwDataHandler, int a_dwNetGamePlayer, int* a_lpBroadcastVars, int a_dwArraySize, int a_hTransactionId) = (int(*)(int, int, int*, int, int))&Parser7;
+
+OPD_s _0x3DB120 = { 0x3DB120, 0x1C85330 };
+void(*_0x3DB120_func)(int money, int t) = (void(*)(int, int))&_0x3DB120;
+OPD_s SuperRun_t = { 0, 0x1C85330 };
+void(*SuperRun_Func)(int player, float speed) = (void(*)(int, float))&SuperRun_t;
+
+OPD_s FUN_009b806c_t = { 0x9B806C, 0x1C85330 };
+int(*_FUN_009b806c)(uint a) = (int(*)(uint))&FUN_009b806c_t;
+
+
 namespace PLAYER
 {
-	static void SET_PLAYER_LOCKON_RANGE_OVERRIDE(Player player, float range) { invoke<Void>(0x74D42C03, player, range); } // 0x74D42C03
 	static void SuperRun(Player player, float multiplier) { invoke<Void>(0x825423C2, player, multiplier); } // 0x6DB47AA77FD94E09 0x825423C2
-	static void TRIGGER_SCRIPT_EVENT(Any p0, int* p1, Any p2, int p3) { invoke<Void>(0x54763B35, p0, p1, p2, p3); } // 0x54763B35
+	static void SET_PLAYER_LOCKON_RANGE_OVERRIDE(Player player, float range) { invoke<Void>(0x74D42C03, player, range); } // 0x74D42C03
 	static void _SET_MOVE_SPEED_MULTIPLIER(Player player, float multiplier) { invoke<Void>(0x825423C2, player, multiplier); } // 0x6DB47AA77FD94E09 0x825423C2
+	static void TRIGGER_SCRIPT_EVENT(Any p0, int* p1, Any p2, int p3) { invoke<Void>(0x54763B35, p0, p1, p2, p3); } // 0x54763B35
 	static Ped GET_PLAYER_PED(Player player) { return invoke<Ped>(0x6E31E993, player); } // 0x6E31E993
 	static Ped GET_PLAYER_PED_SCRIPT_INDEX(Player player) { return invoke<Ped>(0x6AC64990, player); } // 0x6AC64990
 	static void SET_PLAYER_MODEL(Player player, Hash modelHash) { invoke<Void>(0x774A4C54, player, modelHash); } // 0x774A4C54
@@ -288,7 +380,7 @@ namespace ENTITY
 	static void SET_ENTITY_MAX_HEALTH(Entity Entity, BOOL Toggle) { invoke<Void>(0x96F84DF8, Entity, Toggle); } // 0x96F84DF8
 	static Any GET_ENTITY_HEIGHT(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { return invoke<Any>(0xEE443481, p0, p1, p2, p3, p4, p5); } // 0xEE443481
 	static Any GET_ENTITY_HEIGHT_ABOVE_GROUND(Entity Entity) { return invoke<Any>(0x57F56A4D, Entity); } // 0x57F56A4D
-	static void GET_ENTITY_MATRIX(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0xEB9EB001, p0, p1, p2, p3, p4); } // 0xEB9EB001
+	static void GET_ENTITY_MATRIX(Entity p0, Vector3* rightVector, Vector3* forwardVector, Vector3 *upVector, Vector3 *position) { invoke<Void>(0xEB9EB001, p0, rightVector, forwardVector, upVector, position); } // 0xEB9EB001
 	static Any GET_ENTITY_MODEL(Entity Entity) { return invoke<Any>(0xDAFCB3EC, Entity); } // 0xDAFCB3EC
 	static Vector3 GET_OFFSET_FROM_ENTITY_GIVEN_WORLD_COORDS(Any p0, Any p1, Any p2, Any p3) { return invoke<Vector3>(0x6477EC9E, p0, p1, p2, p3); } // 0x6477EC9E
 	static Vector3 GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Entity Entity, float xCoord, float yCoord, float zCoord) { return invoke<Vector3>(0xABCF043A, Entity, xCoord, yCoord, zCoord); } // 0xABCF043A
@@ -343,7 +435,7 @@ namespace ENTITY
 	static BOOL IS_ENTITY_WAITING_FOR_WORLD_COLLISION(Any p0) { return invoke<BOOL>(0x00AB7A4A, p0); } // 0x00AB7A4A
 	static void _0x28924E98(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { invoke<Void>(0x28924E98, p0, p1, p2, p3, p4, p5, p6, p7, p8); } // 0x28924E98
 	static void APPLY_FORCE_TO_ENTITY(Entity entity, BOOL p1, float Force_X, float Force_Y, float Force_Z, float Rot_X, float Rot_Y, float Rot_Z, BOOL p8, BOOL p9, BOOL p10, BOOL p11, int p12, BOOL p13) { invoke<Void>(0xC1C0855A, entity, p1, Force_X, Force_Y, Force_Z, Rot_X, Rot_Y, Rot_Z, p8, p9, p10, p11, p12, p13); } // 0xC1C0855A
-	static void ATTACH_ENTITY_TO_ENTITY(Entity entity1, Entity entity2, int boneIndex, float x, float y, float z, float rot_x, float rot_y, float rot_z, BOOL p9, BOOL p10, BOOL p11, BOOL p12, BOOL p13, BOOL p14) { invoke<Void>(0xEC024237, entity1, entity2, boneIndex, x, y, z, rot_x, rot_y, rot_z, p9, p10, p11, p12, p13, p14); } // 0xEC024237
+	static void ATTACH_ENTITY_TO_ENTITY(Entity entity1, Entity entity2, int boneIndex, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, BOOL p9, BOOL useSoftPinning, BOOL collision, BOOL isPed, int vertexIndex, BOOL fixedRot) { invoke<Void>(0xEC024237, entity1, entity2, boneIndex, xPos, yPos, zPos, xRot, yRot, zRot, p9, useSoftPinning, collision, isPed, vertexIndex, fixedRot); } // 0xEC024237
 	static void ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Entity entity1, Entity entity2, int unknown1, int unknown2, float x1, float y1, float z1, float x2, float y2, float z2, float rot_x, float rot_y, float rot_z, float unknown3, BOOL unknown4, BOOL unknown5, BOOL unknown6, BOOL unknown7, int unknown8) { invoke<Void>(0x0547417F, entity1, entity2, unknown1, unknown2, x1, y1, z1, x2, y2, z2, rot_x, rot_y, rot_z, unknown3, unknown4, unknown5, unknown6, unknown7, unknown8); } // 0x0547417F
 	static void _0x6909BA59(Any p0) { invoke<Void>(0x6909BA59, p0); } // 0x6909BA59
 	static Any _0xE4ECAC22(Any p0, Any p1) { return invoke<Any>(0xE4ECAC22, p0, p1); } // 0xE4ECAC22
@@ -898,6 +990,7 @@ namespace PED
 	static void SET_PED_MOVE_RATE_OVERRIDE(Any p0, Any p1) { invoke<Void>(0x900008C6, p0, p1); } // 0x900008C6
 	static Any _0x79543043(Any p0, Any p1) { return invoke<Any>(0x79543043, p0, p1); } // 0x79543043
 	static int GET_PED_NEARBY_VEHICLES(Ped PedHandle, uint32_t* sizeAndVehs) { return invoke<int>(0xCB716F68, PedHandle, sizeAndVehs); } // 0xCB716F68
+	static int _GET_PED_NEARBY_VEHICLES(Ped PedHandle, int* sizeAndVehs) { return invoke<int>(0xCB716F68, PedHandle, sizeAndVehs); } // 0xCB716F68
 
 	static int GET_PED_NEARBY_PEDS(Ped PedHandle, int* PToArray, int p2) { return invoke<int>(0x4D3325F4, PedHandle, PToArray, p2); } // 0x4D3325F4
 	static Any _0xF9FB4B71(Any p0) { return invoke<Any>(0xF9FB4B71, p0); } // 0xF9FB4B71
@@ -946,6 +1039,9 @@ namespace PED
 
 namespace VEHICLE
 {
+	static BOOL DOES_CARGOBOB_HAVE_PICKUP_MAGNET(Vehicle vehicle) { return invoke<BOOL>(0x4778CA0A, vehicle); } // 0xEC651BC0
+	static int _GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(Vehicle Vehicle) { return invoke<int>(0x0A2FC08C, Vehicle); } // 0x0A2FC08C
+	static BOOL _IS_ANY_VEHICLE_SEAT_EMPTY(Vehicle p0) { return invoke<BOOL>(0x648E685A, p0); } // 648E685A
 	static void _SET_CARGOBOB_PICKUP_MAGNET_ACTIVE(Vehicle cargobob, BOOL isActive) { invoke<Void>(0xF57066DA, cargobob, isActive); } // 0xF57066DA
 	static Vehicle CREATE_VEHICLE(Hash VehicleHash, float xCoord, float yCoord, float zCoord, float Heading, BOOL networkHandle, BOOL vehiclehandle) { return invoke<Vehicle>(0xDD75460A, VehicleHash, xCoord, yCoord, zCoord, Heading, networkHandle, vehiclehandle); } // 0xDD75460A
 	static void DELETE_VEHICLE(Vehicle* vehicle) { invoke<Void>(0x9803AF60, vehicle); } // 0x9803AF60
@@ -1392,7 +1488,7 @@ namespace VEHICLE
 	static Any GET_VEHICLE_ATTACHED_TO_CARGOBOB(Any p0) { return invoke<Any>(0x301A1D24, p0); } // 0x301A1D24
 	static void ATTACH_VEHICLE_TO_CARGOBOB(Entity entity, Entity entity2, int instant, float X, float y, float z) { invoke<Void>(0x607DC9D5, entity, entity2, instant, X, y, z); } // 0x607DC9D5
 	static Any _0xAF769B81(Any p0) { return invoke<Any>(0xAF769B81, p0); } // 0xAF769B81
-	static void _0x4D3C9A99(Any p0) { invoke<Void>(0x4D3C9A99, p0); } // 0x4D3C9A99
+	static int CREATE_PICK_UP_ROPE_FOR_CARGOBOB(Vehicle cargobob, int state) { invoke<int>(0x4D3C9A99, cargobob, state); } // 0x4D3C9A99
 	static void GET_CLOSEST_VEHICLE_TURNING_BLOODSPRAY(Any p0) { invoke<Void>(0xA8211EE9, p0); } // 0xA8211EE9
 	static void GET_VEHICLE_HAS_BACK_RECURSIVE(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x3A8AB081, p0, p1, p2, p3); } // 0x3A8AB081
 	static BOOL DOES_VEHICLE_HAVE_WEAPONS(Vehicle vehicle) { return invoke<BOOL>(0xB2E1E1FB, vehicle); } // 0xB2E1E1FB
@@ -1427,7 +1523,7 @@ namespace VEHICLE
 
 namespace OBJECT
 {
-	static Any CREATE_OBJECT(Hash ObjectHash, float XCoord, float YCoord, float ZCoord, int p4, BOOL p5, BOOL dynamic) { return invoke<Any>(0x2F7AA05C, ObjectHash, XCoord, YCoord, ZCoord, p4, p5, dynamic); } // 0x2F7AA05C
+	static Any CREATE_OBJECT(Hash ObjectHash, float XCoord, float YCoord, float ZCoord, int is_network, BOOL p5, BOOL dynamic) { return invoke<Any>(0x2F7AA05C, ObjectHash, XCoord, YCoord, ZCoord, is_network, p5, dynamic); } // 0x2F7AA05C
 	static Any CREATE_OBJECT_NO_OFFSET(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return invoke<Any>(0x58040420, p0, p1, p2, p3, p4, p5, p6); } // 0x58040420
 	static void DELETE_OBJECT(Object* Object) { invoke<Void>(0xD6EF9DA7, Object); } // 0xD6EF9DA7
 	static Any PLACE_OBJECT_ON_GROUND_PROPERLY(Object Object) { return invoke<Any>(0x8F95A20B, Object); } // 0x8F95A20B
@@ -1584,7 +1680,7 @@ namespace AI
 	static void _0x86DC03F9(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12) { invoke<Void>(0x86DC03F9, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12); } // 0x86DC03F9
 	static void TASK_PLAY_ANIM(Ped PedHandle, char* AnimSet, char* AnimationName, float Speed, float unk, int Loop, int LastAnimation, float PlaybackRate, BOOL xLock, BOOL yLock, BOOL zLock) { invoke<Void>(0x5AB552C6, PedHandle, AnimSet, AnimationName, Speed, unk, Loop, LastAnimation, PlaybackRate, xLock, yLock, zLock); } // 0x5AB552C6
 	static void _0x3DDEB0E6(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12, Any p13, Any p14, Any p15) { invoke<Void>(0x3DDEB0E6, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15); } // 0x3DDEB0E6
-	static void STOP_ANIM_TASK(Any p0, char* p1, char* p2, Any p3) { invoke<Void>(0x2B520A57, p0, p1, p2, p3); } // 0x2B520A57
+	static void STOP_ANIM_TASK(Any p0, char* p1, char* p2, float p3) { invoke<Void>(0x2B520A57, p0, p1, p2, p3); } // 0x2B520A57
 	static void TASK_SCRIPTED_ANIMATION(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { invoke<Void>(0xFC2DCF47, p0, p1, p2, p3, p4, p5); } // 0xFC2DCF47
 	static void PLAY_ENTITY_SCRIPTED_ANIM(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { invoke<Void>(0x02F72AE5, p0, p1, p2, p3, p4, p5); } // 0x02F72AE5
 	static void STOP_ANIM_PLAYBACK(Any p0, Any p1, Any p2) { invoke<Void>(0xE5F16398, p0, p1, p2); } // 0xE5F16398
@@ -1890,14 +1986,14 @@ namespace GAMEPLAY
 	static BOOL IS_AREA_OCCUPIED(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12) { return invoke<BOOL>(0xC013972F, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12); } // 0xC013972F
 	static BOOL IS_POSITION_OCCUPIED(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10) { return invoke<BOOL>(0x452E8D9E, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10); } // 0x452E8D9E
 	static BOOL IS_POINT_OBSCURED_BY_A_MISSION_ENTITY(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return invoke<BOOL>(0xC161558D, p0, p1, p2, p3, p4, p5, p6); } // 0xC161558D
-	static void CLEAR_AREA(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { invoke<Void>(0x854E9AB8, p0, p1, p2, p3, p4, p5, p6, p7); } // 0x854E9AB8
+	static void CLEAR_AREA(float p0, float p1, float p2, float p3, Any p4, Any p5, Any p6, Any p7) { invoke<Void>(0x854E9AB8, p0, p1, p2, p3, p4, p5, p6, p7); } // 0x854E9AB8
 	static void _0x20E4FFD9(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7) { invoke<Void>(0x20E4FFD9, p0, p1, p2, p3, p4, p5, p6, p7); } // 0x20E4FFD9
-	static void CLEAR_AREA_OF_VEHICLES(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { invoke<Void>(0x63320F3C, p0, p1, p2, p3, p4, p5, p6, p7, p8); } // 0x63320F3C
-	static void CLEAR_ANGLED_AREA_OF_VEHICLES(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11) { invoke<Void>(0xF11A3018, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0xF11A3018
-	static void CLEAR_AREA_OF_OBJECTS(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0xBB720FE7, p0, p1, p2, p3, p4); } // 0xBB720FE7
+	static void CLEAR_AREA_OF_VEHICLES(float p0, float p1, float p2, float p3, Any p4, Any p5, Any p6, Any p7, Any p8) { invoke<Void>(0x63320F3C, p0, p1, p2, p3, p4, p5, p6, p7, p8); } // 0x63320F3C
+	static void CLEAR_ANGLED_AREA_OF_VEHICLES(float p0, float p1, float p2, float p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11) { invoke<Void>(0xF11A3018, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0xF11A3018
+	static void CLEAR_AREA_OF_OBJECTS(float p0, float p1, float p2, float p3, Any p4) { invoke<Void>(0xBB720FE7, p0, p1, p2, p3, p4); } // 0xBB720FE7
 	static void CLEAR_AREA_OF_PEDS(float XCoord, float YCoord, float zCoord, float Area, Any p4) { invoke<Void>(0x25BE7FA8, XCoord, YCoord, zCoord, Area, p4); } // 0x25BE7FA8
-	static void CLEAR_AREA_OF_COPS(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0x95C53824, p0, p1, p2, p3, p4); } // 0x95C53824
-	static void CLEAR_AREA_OF_PROJECTILES(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0x18DB5434, p0, p1, p2, p3, p4); } // 0x18DB5434
+	static void CLEAR_AREA_OF_COPS(float p0, float p1, float p2, float p3, Any p4) { invoke<Void>(0x95C53824, p0, p1, p2, p3, p4); } // 0x95C53824
+	static void CLEAR_AREA_OF_PROJECTILES(float p0, float p1, float p2, float p3, Any p4) { invoke<Void>(0x18DB5434, p0, p1, p2, p3, p4); } // 0x18DB5434
 	static void SET_SAVE_MENU_ACTIVE(Any p0) { invoke<Void>(0xF5CCF164, p0); } // 0xF5CCF164
 	static Any _0x39771F21() { return invoke<Any>(0x39771F21); } // 0x39771F21
 	static void SET_CREDITS_ACTIVE(Any p0) { invoke<Void>(0xEC2A0ECF, p0); } // 0xEC2A0ECF
@@ -1977,7 +2073,7 @@ namespace GAMEPLAY
 	static BOOL IS_PS3_VERSION() { return invoke<BOOL>(0x4C0D5303); } // 0x4C0D5303
 	static BOOL IS_PC_VERSION() { return invoke<BOOL>(0x4D5D9EE3); } // 0x4D5D9EE3
 	static BOOL IS_AUSSIE_VERSION() { return invoke<BOOL>(0x944BA1DC); } // 0x944BA1DC
-	static BOOL IS_STRING_NULL(Any p0) { return invoke<BOOL>(0x8E71E00F, p0); } // 0x8E71E00F
+	static BOOL IS_STRING_NULL(char* p0) { return invoke<BOOL>(0x8E71E00F, p0); } // 0x8E71E00F
 	static BOOL IS_STRING_NULL_OR_EMPTY(char *string) { return invoke<BOOL>(0x42E9F2CA, string); } // 0x42E9F2CA
 	static BOOL STRING_TO_INT(char* string, int* ToStore) { return invoke<BOOL>(0x590A8160, string, ToStore); } // 0x590A8160
 	static void SET_BITS_IN_RANGE(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x32094719, p0, p1, p2, p3); } // 0x32094719
@@ -2120,7 +2216,7 @@ namespace AUDIO
 	static void PLAY_SOUND_FRONTEND(int p0, char* SoundFrom, char* SoundSet) { invoke<Void>(0x2E458F74, p0, SoundFrom, SoundSet); } // 0x2E458F74
 	static void _0xC70E6CFA(Any p0, Any p1) { invoke<Void>(0xC70E6CFA, p0, p1); } // 0xC70E6CFA
 	static void PLAY_SOUND_FROM_ENTITY(int p0, char* p1, Entity entity, char* p3, Any p4, Any p5) { invoke<Void>(0x95AE00F8, p0, p1, entity, p3, p4, p5); } // 0x95AE00F8
-	static void PLAY_SOUND_FROM_COORD(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8) { invoke<Void>(0xCAD3E2D5, p0, p1, p2, p3, p4, p5, p6, p7, p8); } // 0xCAD3E2D5
+	static void PLAY_SOUND_FROM_COORD(Any p0, char* p1, float p2, float p3, float p4, Any p5, Any p6, Any p7, Any p8) { invoke<Void>(0xCAD3E2D5, p0, p1, p2, p3, p4, p5, p6, p7, p8); } // 0xCAD3E2D5
 	static void STOP_SOUND(Any p0) { invoke<Void>(0xCD7F4030, p0); } // 0xCD7F4030
 	static Any GET_NETWORK_ID_FROM_SOUND_ID(Any p0) { return invoke<Any>(0x2576F610, p0); } // 0x2576F610
 	static Any _0xD064D4DC(Any p0) { return invoke<Any>(0xD064D4DC, p0); } // 0xD064D4DC
@@ -2478,7 +2574,7 @@ namespace CAM
 	static Any GET_GAMEPLAY_CAM_FOV() { return invoke<Any>(0x4D6B3BFA); } // 0x4D6B3BFA
 	static void _0xA6E73135(Any p0) { invoke<Void>(0xA6E73135, p0); } // 0xA6E73135
 	static void _0x1126E37C(Any p0) { invoke<Void>(0x1126E37C, p0); } // 0x1126E37C
-	static Any GET_GAMEPLAY_CAM_RELATIVE_HEADING() { return invoke<Any>(0xCAF839C2); } // 0xCAF839C2
+	static float GET_GAMEPLAY_CAM_RELATIVE_HEADING() { return invoke<float>(0xCAF839C2); } // 0xCAF839C2
 	static void SET_GAMEPLAY_CAM_RELATIVE_HEADING(float heading) { invoke<Void>(0x20C6217C, heading); } // 0x20C6217C
 	static Any GET_GAMEPLAY_CAM_RELATIVE_PITCH() { return invoke<Any>(0xFC5A4946); } // 0xFC5A4946
 	static void SET_GAMEPLAY_CAM_RELATIVE_PITCH(float x, float Value2) { invoke<Void>(0x6381B963, x, Value2); } // 0x6381B963
@@ -2812,7 +2908,7 @@ namespace SCRIPT
 	static void SET_SCRIPT_AS_NO_LONGER_NEEDED(char* ScriptName) { invoke<Void>(0x6FCB7795, ScriptName); } // 0x6FCB7795
 	static BOOL HAS_SCRIPT_LOADED(char* ScriptName) { return invoke<BOOL>(0x5D67F751, ScriptName); } // 0x5D67F751
 	static BOOL DOES_SCRIPT_EXIST(char* ScriptName) { return invoke<BOOL>(0xDEAB87AB, ScriptName); } // 0xDEAB87AB
-	static void _0x1C68D9DC(Any p0) { invoke<Void>(0x1C68D9DC, p0); } // 0x1C68D9DC
+	static void REQUEST_SCRIPT_WITH_NAME_HASH(Any p0) { invoke<Void>(0x1C68D9DC, p0); } // 0x1C68D9DC
 	static void _0x96C26F66(Any p0) { invoke<Void>(0x96C26F66, p0); } // 0x96C26F66
 	static Any _0x06674818(Any p0) { return invoke<Any>(0x06674818, p0); } // 0x06674818
 	static void TERMINATE_THREAD(int ThreadID) { invoke<Void>(0x253FD520, ThreadID); } // 0x253FD520
@@ -2830,6 +2926,7 @@ namespace SCRIPT
 	static Any GET_EVENT_AT_INDEX(Any p0, Any p1) { return invoke<Any>(0xB49C1442, p0, p1); } // 0xB49C1442
 	static bool GET_EVENT_DATA(Any eventGroup, Any eventIndex, int* p2, Any argStructSize) { return invoke<bool>(0x4280F92F, eventGroup, eventIndex, p2, argStructSize); } // 0x4280F92F
 	static void TRIGGER_SCRIPT_EVENT(BOOL p0, int *args, int argCount, int bit) { invoke<Void>(0x54763B35, p0, args, argCount, bit); } // 0x54763B35
+	static void TRIGGER_SCRIPT_EVENT_2(int always1, ScriptArg *argsStruct, int argsStructCount, int playerbitset) { invoke<Void>(0x54763B35, always1, argsStruct, argsStructCount, playerbitset); }
 	static void SHUTDOWN_LOADING_SCREEN() { invoke<Void>(0xA2826D17); } // 0xA2826D17
 	static void SET_NO_LOADING_SCREEN(BOOL p0) { invoke<Void>(0xC8055034, p0); } // 0xC8055034
 	static void _0xB03BCCDF() { invoke<Void>(0xB03BCCDF); } // 0xB03BCCDF
@@ -2837,6 +2934,7 @@ namespace SCRIPT
 
 namespace UI
 {
+	static char* _GET_LABEL_TEXT(char* labelName) { return invoke<char*>(0x95C4B5AD, labelName); } //0x95C4B5AD 
 	static void _0xCB7C8994(char* p0) { invoke<Void>(0xCB7C8994, p0); } // 0xCB7C8994
 	static void _0x903F5EE4(int p0) { invoke<Void>(0x903F5EE4, p0); } // 0x903F5EE4
 	static void _0x94119534() { invoke<Void>(0x94119534); } // 0x94119534
@@ -2955,11 +3053,11 @@ namespace UI
 	static void _0x25EC28C0(Any p0, Any p1) { invoke<Void>(0x25EC28C0, p0, p1); } // 0x25EC28C0
 	static void _0x09CF1CE5(Any p0) { invoke<Void>(0x09CF1CE5, p0); } // 0x09CF1CE5
 	static void _0xE8D3A910() { invoke<Void>(0xE8D3A910); } // 0xE8D3A910
-	static void GET_HUD_COLOUR(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0x63F66A0B, p0, p1, p2, p3, p4); } // 0x63F66A0B
+	static void GET_HUD_COLOUR(int hudColorIndex, int *r, int *g, int *b, int *a) { invoke<Void>(0x63F66A0B, hudColorIndex, r, g, b, a); } // 0x63F66A0B
 	static void _0x0E41E45C(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x0E41E45C, p0, p1, p2, p3); } // 0x0E41E45C
 	static void _0x6BE3ACA8(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x6BE3ACA8, p0, p1, p2, p3); } // 0x6BE3ACA8
 	static void _0x3B216749(Any p0, Any p1) { invoke<Void>(0x3B216749, p0, p1); } // 0x3B216749
-	static void _0xF6E7E92B(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0xF6E7E92B, p0, p1, p2, p3, p4); } // 0xF6E7E92B
+	static void _SET_HUD_COLOR(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0xF6E7E92B, p0, p1, p2, p3, p4); } // 0xF6E7E92B
 	static void FLASH_ABILITY_BAR(Any p0) { invoke<Void>(0x3648960D, p0); } // 0x3648960D
 	static void SET_ABILITY_BAR_VALUE(Any p0, Any p1) { invoke<Void>(0x24E53FD8, p0, p1); } // 0x24E53FD8
 	static void FLASH_WANTED_DISPLAY(BOOL p0) { invoke<Void>(0x629F866B, p0); } // 0x629F866B
@@ -3248,6 +3346,7 @@ namespace UI
 
 namespace GRAPHICS
 {
+	static Any _START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE_4(char *effectName, Ped ped, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, BOOL p10, BOOL p11, BOOL p12) { return invoke<Any>(0x161780C1, effectName, ped, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, p10, p11, p12); } // 0x161780C1
 	static BOOL _WORLD3D_TO_SCREEN2D(float x3d, float y3d, float z3d, float* x2d, float* y2d) { return invoke<BOOL>(0x1F950E4B, x3d, y3d, z3d, x2d, y2d); } // 0x1F950E4B 0x1F950E4B
 	static void STOP_SCREEN_EFFECT(char* p0) { invoke<Void>(0x06BB5CDA, p0); } // 0x06BB5CDA
 	static void START_SCREEN_EFFECT(char* effectName, int duration, BOOL looped) { invoke<Void>(0x1D980479, effectName, duration, looped); } // 0x2206BF9A37B7F724 0x1D980479
@@ -3327,7 +3426,10 @@ namespace GRAPHICS
 	static void _0xADF81D24(Any p0) { invoke<Void>(0xADF81D24, p0); } // 0xADF81D24
 	static void _0x228A2598(Any p0, Any p1) { invoke<Void>(0x228A2598, p0, p1); } // 0x228A2598
 	static void _0x3FE33BD6() { invoke<Void>(0x3FE33BD6); } // 0x3FE33BD6
+	static void RESET_SCRIPT_GFX_ALIGN() { invoke<Void>(0x3FE33BD6); } // 0x3FE33BD6
 	static void _0x76C641E4(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x76C641E4, p0, p1, p2, p3); } // 0x76C641E4
+	static void _SCREEN_DRAW_POSITION_RATIO(float p0, float p1, float p2, float p3) { invoke<Void>(0x76C641E4, p0, p1, p2, p3); } // 0x76C641E4
+
 	static Any _0x3F0D1A6F() { return invoke<Any>(0x3F0D1A6F); } // 0x3F0D1A6F
 	static void DRAW_SPRITE(char* Type, char* IconType, float X, float Y, float Z, float width, float height, int RED, int GREEN, int BLUE, int Alpha) { invoke<Void>(0x1FEC16B0, Type, IconType, X, Y, Z, width, height, RED, GREEN, BLUE, Alpha); } // 0x1FEC16B0
 	static Any ADD_ENTITY_ICON(Any p0, Any p1) { return invoke<Any>(0xF3027D21, p0, p1); } // 0xF3027D21
@@ -3400,16 +3502,17 @@ namespace GRAPHICS
 	static Any _0xB2410EAB(Any p0) { return invoke<Any>(0xB2410EAB, p0); } // 0xB2410EAB
 	static Any _0x5AB94128() { return invoke<Any>(0x5AB94128); } // 0x5AB94128
 	static Any _0xD63FCB3E(Any p0, Any p1) { return invoke<Any>(0xD63FCB3E, p0, p1); } // 0xD63FCB3E
-	static Any _START_FWPARTICLE_FX_NON_LOOPED_AT_COORD(char* FWType, float* xCoord, float* yCoord, float* zCoord, float unk, float unk2, float size, int unk3, int unk4, int unk5, int unk6) { return invoke<Any>(0x633F8C48, FWType, xCoord, yCoord, zCoord, unk, unk2, size, unk3, unk4, unk5, unk6); } // 0x633F8C48
+	static Any _START_FWPARTICLE_FX_NON_LOOPED_AT_COORD(char* FWType, float xCoord, float yCoord, float zCoord, float unk, float unk2, float size, int unk3, int unk4, int unk5, int unk6) { return invoke<Any>(0x633F8C48, FWType, xCoord, yCoord, zCoord, unk, unk2, size, unk3, unk4, unk5, unk6); } // 0x633F8C48
 	static Any START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(char* p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12) { return invoke<Any>(0x53DAEF4E, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12); } // 0x53DAEF4E
 	static Any _0x161780C1(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11, Any p12) { return invoke<Any>(0x161780C1, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12); } // 0x161780C1
 	static Any START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(char *effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, BOOL p9, BOOL p10, BOOL p11) { return invoke<Any>(0x9604DAD4, effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, p9, p10, p11); } // 0x9604DAD4
+	static Any _START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(char *effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, BOOL p9, BOOL p10, BOOL p11) { return invoke<Any>(0x469A2B4A, effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, p9, p10, p11); } // 0x469A2B4A
 	static void _0x7B689E20(int Red, int Green, int Blue) { invoke<Void>(0x7B689E20, Red, Green, Blue); } // 0x7B689E20
 	static void SET_PARTICLE_FX_NON_LOOPED_ALPHA(Any p0) { invoke<Void>(0x497EAFF2, p0); } // 0x497EAFF2
 	static int START_PARTICLE_FX_NON_LOOPED_AT_COORD(char *effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, BOOL xAxis, BOOL yAxis, BOOL zAxis) { return invoke<int>(0xD348E3E6, effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis); } // 0xD348E3E6
 	static int START_PARTICLE_FX_LOOPED_ON_PED_BONE(char * p0, Ped p1, float p2, float p3, float p4, float p5, float p6, float p7, int p8, float p9, BOOL p10, BOOL p11, BOOL p12) { return invoke<Any>(0xF8FC196F, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12); } // 0xF8FC196F
 	static Any START_PARTICLE_FX_LOOPED_ON_ENTITY(char* p0, Ped p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, Any p9, Any p10, Any p11) { return invoke<Any>(0x0D06FF62, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0x0D06FF62
-	static Any _0x110752B2(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9, Any p10, Any p11) { return invoke<Any>(0x110752B2, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0x110752B2
+	static Any _0x110752B2(char* p0, Entity p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, Any p9, Any p10, Any p11) { return invoke<Any>(0x110752B2, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0x110752B2
 	static void STOP_PARTICLE_FX_LOOPED(Any p0, Any p1) { invoke<Void>(0xD245455B, p0, p1); } // 0xD245455B
 	static void REMOVE_PARTICLE_FX(Any p0, Any p1) { invoke<Void>(0x6BA48C7E, p0, p1); } // 0x6BA48C7E
 	static void REMOVE_PARTICLE_FX_FROM_ENTITY(Any p0) { invoke<Void>(0xCEDE52E9, p0); } // 0xCEDE52E9
@@ -3583,7 +3686,7 @@ namespace STATS
 	static Any _0xA286F015(Any p0, Any p1) { return invoke<Any>(0xA286F015, p0, p1); } // 0xA286F015
 	static BOOL STAT_GET_INT(Hash statHash, int* valuePointer, int p2) { return invoke<BOOL>(0x1C6FE43E, statHash, valuePointer, p2); } // 0x1C6FE43E
 	static BOOL STAT_GET_FLOAT(Hash statHash, float* valuePointer, Any p2) { return invoke<BOOL>(0xFCBDA612, statHash, valuePointer, p2); } // 0xFCBDA612
-	static BOOL STAT_GET_BOOL(Hash statHash, int* valuePointer, Any p2) { return invoke<BOOL>(0x28A3DD2B, statHash, valuePointer, p2); } // 0x28A3DD2B
+	static BOOL STAT_GET_BOOL(Hash statHash, bool* valuePointer, Any p2) { return invoke<BOOL>(0x28A3DD2B, statHash, valuePointer, p2); } // 0x28A3DD2B
 	static Any STAT_GET_DATE(Any p0, Any p1, Any p2, Any p3) { return invoke<Any>(0xD762D16C, p0, p1, p2, p3); } // 0xD762D16C
 	static Any STAT_GET_STRING(Any p0, Any p1) { return invoke<Any>(0x10CE4BDE, p0, p1); } // 0x10CE4BDE
 	static Any STAT_GET_POS(Any p0, Any p1, Any p2, Any p3, Any p4) { return invoke<Any>(0xC846ECCE, p0, p1, p2, p3, p4); } // 0xC846ECCE
@@ -3752,7 +3855,7 @@ namespace APP
 namespace TIME
 {
 	static void SET_CLOCK_TIME(Any p0, Any p1, Any p2) { invoke<Void>(0x26F6AF14, p0, p1, p2); } // 0x26F6AF14
-	static void PAUSE_CLOCK(Any p0) { invoke<Void>(0xB02D6124, p0); } // 0xB02D6124
+	static void PAUSE_CLOCK(bool p0) { invoke<Void>(0xB02D6124, p0); } // 0xB02D6124
 	static void _0x57B8DA7C(Any p0, Any p1, Any p2) { invoke<Void>(0x57B8DA7C, p0, p1, p2); } // 0x57B8DA7C
 	static void ADD_TO_CLOCK_TIME(Any p0, Any p1, Any p2) { invoke<Void>(0xCC40D20D, p0, p1, p2); } // 0xCC40D20D
 	static Any GET_CLOCK_HOURS() { return invoke<Any>(0x7EF8316F); } // 0x7EF8316F
@@ -3924,7 +4027,7 @@ namespace FIRE
 	static void STOP_FIRE_IN_RANGE(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x725C7205, p0, p1, p2, p3); } // 0x725C7205
 	static Any GET_CLOSEST_FIRE_POS(Any p0, Any p1, Any p2, Any p3) { return invoke<Any>(0xC4977B47, p0, p1, p2, p3); } // 0xC4977B47
 	static void ADD_EXPLOSION(float XCoordinate, float YCoordinate, float ZCoordinate, int ExplosionType, float ExplosionRadius, BOOL isAudible, BOOL isVisible, float CameraShake) { invoke<Void>(0x10AF5258, XCoordinate, YCoordinate, ZCoordinate, ExplosionType, ExplosionRadius, isAudible, isVisible, CameraShake); } // 0x10AF5258
-	static void ADD_OWNED_EXPLOSION(Ped PedHandle, Any XCoordinate, Any YCoordinate, Any ZCoordinate, int ExlosionType, float ExplosionRadius, BOOL IsAudible, BOOL IsVisible, float CamerShake) { invoke<Void>(0x27EE0D67, PedHandle, XCoordinate, YCoordinate, ZCoordinate, ExlosionType, ExplosionRadius, IsAudible, IsVisible, CamerShake); } // 0x27EE0D67
+	static void ADD_OWNED_EXPLOSION(Ped PedHandle, float XCoordinate, float YCoordinate, float ZCoordinate, int ExlosionType, float ExplosionRadius, BOOL IsAudible, BOOL IsVisible, float CamerShake) { invoke<Void>(0x27EE0D67, PedHandle, XCoordinate, YCoordinate, ZCoordinate, ExlosionType, ExplosionRadius, IsAudible, IsVisible, CamerShake); } // 0x27EE0D67
 	static void _0xCF358946(float XCoord, float YCoord, float ZCoord, int unk, Hash ExplsionFX, float ExlosionRadius, BOOL isAudible, BOOL isVisible, float unk2) { invoke<Void>(0xCF358946, XCoord, YCoord, ZCoord, unk, ExplsionFX, ExlosionRadius, isAudible, isVisible, unk2); } // 0xCF358946
 	static void ADD_EXPLOSION_WITH_USER_VFX(float XCoord, float YCoord, float ZCoord, int unk, Hash ExplsionFX, float ExlosionRadius, BOOL isAudible, BOOL isVisible, float unk2) { invoke<Void>(0xCF358946, XCoord, YCoord, ZCoord, unk, ExplsionFX, ExlosionRadius, isAudible, isVisible, unk2); } // 0xCF358946
 	static BOOL IS_EXPLOSION_IN_AREA(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6) { return invoke<BOOL>(0xFB40075B, p0, p1, p2, p3, p4, p5, p6); } // 0xFB40075B
@@ -4035,6 +4138,10 @@ namespace WORLDPROBE
 
 namespace NETWORK
 {
+	static void NETWORK_OVERRIDE_CHAT_RESTRICTIONS(Any p0, Any p1) { invoke<Void>(0x74EE2D8B, p0, p1); } // 0x74EE2D8B
+
+	static void NETWORK_OVERRIDE_RECEIVE_RESTRICTIONS(Any p0, Any p1) { invoke<Void>(0x95F1C60D, p0, p1); } // 0x95F1C60D
+	static void _NETWORK_OVERRIDE_SEND_RESTRICTIONS(Player player, BOOL toggle) { invoke<Void>(0x95F1C60D, player, toggle); }
 	static void NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE_A(Entity entity, int netScene, char *animDict, char *animName, float speed, float speedMultiplier, int duration, int flag, float playbackRate) { invoke<Void>(0xB386713E, entity, netScene, animDict, animName, speed, speedMultiplier, duration, flag, playbackRate); } // 0xB386713E
 	static Hash _NETWORK_HASH_FROM_PLAYER_HANDLE(Player player) { return invoke<Hash>(0x44E1C269, player); } // 0x44E1C269
 	static void NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE777(Entity entity, int netScene, char *animDict, char *animName, float speed, float speedMultiplier, int duration, int flag, float playbackRate) { invoke<Void>(0xB386713E, entity, netScene, animDict, animName, speed, speedMultiplier, duration, flag, playbackRate); } // 0xB386713E
@@ -4220,6 +4327,7 @@ namespace NETWORK
 	static void _0xC47352E7() { invoke<Void>(0xC47352E7); } // 0xC47352E7
 	static Any NETWORK_INVITE_GAMERS(Any p0, Any p1, Any p2, Any p3) { return invoke<Any>(0x52FB8074, p0, p1, p2, p3); } // 0x52FB8074
 	static Any _0xEC651BC0(Any p0) { return invoke<Any>(0xEC651BC0, p0); } // 0xEC651BC0
+
 	static Any NETWORK_GET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(Any p0) { return invoke<Any>(0x72BA00CE, p0); } // 0x72BA00CE
 	static Any NETWORK_SET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(Any p0) { return invoke<Any>(0xFD95899E, p0); } // 0xFD95899E
 	static void _0x0808D4CC(Any p0, Any p1) { invoke<Void>(0x0808D4CC, p0, p1); } // 0x0808D4CC
@@ -4318,7 +4426,7 @@ namespace NETWORK
 	static Any NETWORK_GAMERTAG_FROM_HANDLE_SUCCEEDED() { return invoke<Any>(0x89C2B5EA); } // 0x89C2B5EA
 	static char* NETWORK_GET_GAMERTAG_FROM_HANDLE(int* p0) { return invoke<char*>(0xA18A1B26, p0); } // 0xA18A1B26
 	static void NETWORK_HANDLE_FROM_PLAYER2(Player player, int *networkHandle, int bufferSize) { invoke<Void>(0xD3498917, player, networkHandle, bufferSize); } // 0xD3498917
-	static char* NETWORK_GET_GAMERTAG_FROM_HANDLE_1(int* p0) { return invoke<char*>(0xA18A1B26, p0); } // 0xA18A1B26
+	static char* NETWORK_GET_GAMERTAG_FROM_HANDLE_1(int FreeMemPointer) { return invoke<char*>(0xA18A1B26, FreeMemPointer); } // 0xA18A1B26
 
 	static Any NETWORK_ARE_HANDLES_THE_SAME(Any p0, Any p1) { return invoke<Any>(0x45975AE3, p0, p1); } // 0x45975AE3
 	static Any NETWORK_IS_HANDLE_VALID(Any p0, Any p1) { return invoke<Any>(0xF0996C6E, p0, p1); } // 0xF0996C6E
@@ -4708,7 +4816,7 @@ namespace NETWORKCASH
 	static void NETWORK_EARN_FROM_PROPERTY(Any p0, Any p1) { invoke<Void>(0x9BE4F7E1, p0, p1); } // 0x9BE4F7E1
 	static void _0x866004A8(Any p0, Any p1) { invoke<Void>(0x866004A8, p0, p1); } // 0x866004A8
 	static void _0xCC068380(Any p0) { invoke<Void>(0xCC068380, p0); } // 0xCC068380
-	static void NETWORK_EARN_FROM_ROCKSTAR(Any p0) { invoke<Void>(0x5A3733CC, p0); } // 0x5A3733CC
+	static void NETWORK_EARN_FROM_ROCKSTAR(uint p0) { invoke<Void>(0x5A3733CC, p0); } // 0x5A3733CC
 	static void NETWORK_EARN_FROM_VEHICLE(Any p0, Any p1) { invoke<Void>(0xF803589D, p0, p1); } // 0xF803589D
 	static void _0x96B8BEE8(Any p0, Any p1) { invoke<Void>(0x96B8BEE8, p0, p1); } // 0x96B8BEE8
 	static void NETWORK_SPENT_TAXI(Any p0, Any p1, Any p2) { invoke<Void>(0x1F3DB3E3, p0, p1, p2); } // 0x1F3DB3E3
@@ -4909,19 +5017,29 @@ namespace UNK
 	static void _0x8C227332(Any p0) { invoke<Void>(0x8C227332, p0); } // 0x8C227332
 }
 
-void TriggerScriptEvent(int* Args, int ArgCount, Player BitsetPlayer)
+
+
+OPD_s NETWORK_HANDLE_FROM_PLAYER_FUNC_t = { 0x47DF9C, 0x1C85330 };
+unsigned int(*NETWORK_HANDLE_FROM_PLAYER_FUNC)(unsigned int a_uiRecevPlayerIndex, unsigned int* valuePointer) = (unsigned int(*)(unsigned int, unsigned int*))&NETWORK_HANDLE_FROM_PLAYER_FUNC_t;
+int(*_NETWORK_HANDLE_FROM_PLAYER_FUNC)(int r3, int r4) = (int(*)(int, int))&RTA(0x47DF9C);
+
+unsigned int NETWORK_HANDLE_FROM_PLAYER(unsigned int PlayerIndex)
 {
-	unsigned int bits = (1 << BitsetPlayer);
-	PLAYER::TRIGGER_SCRIPT_EVENT(1, Args, ArgCount, bits);
+	unsigned int valuePointer = 1;
+	return NETWORK_HANDLE_FROM_PLAYER_FUNC(PlayerIndex, &valuePointer);
 }
+
+
 OPD_s incrementStats_t = { 0x12D137C , 0x1C85330 };//bljm 2.24
 OPD_s cNetPlayerFunc_t = { 0x47DF9C , 0x1C85330 };//bljm 2.24
 int(*cNetPlayerFunc)(int playerIndex) = (int(*)(int))&cNetPlayerFunc_t;
 void(*incrementStats)(int statIndex, float valueIndex, int playerIndex) = (void(*)(int, float, int))&incrementStats_t;
+void(*incrementStats2)(int statIndex, int valueIndex, int playerIndex) = (void(*)(int, int, int))&incrementStats_t;
 void setPlayerStat(int playerIndex, int statIndex, float valueIndex)
 {
+
 	//setPlayerStatInt(playerIndex, statIndex, valueIndex);
-	incrementStats(statIndex, valueIndex, cNetPlayerFunc(playerIndex));
+	incrementStats(statIndex, valueIndex, NETWORK_HANDLE_FROM_PLAYER(playerIndex));
 }//0x3AAC7C0xA55270
 
 
@@ -4932,7 +5050,7 @@ void setPlayerStat(int playerIndex, int statIndex, float valueIndex)
 
 bool isOnline()
 {
-	if (*(char*)0x223F0C0 > 0)
+	if (*(int*)0x223F0C0 > 0 && *(int*)0x223F0C4 > 0)
 	{
 		return true;
 	}
@@ -4943,29 +5061,37 @@ bool isOnline()
 
 	
 }
-
-
-
-OPD_s NETWORK_HANDLE_FROM_PLAYER_FUNC_t = { 0x47DF9C, 0x1C85330 };
-unsigned int(*NETWORK_HANDLE_FROM_PLAYER_FUNC)(unsigned int a_uiRecevPlayerIndex, unsigned int* valuePointer) = (unsigned int(*)(unsigned int, unsigned int*))&NETWORK_HANDLE_FROM_PLAYER_FUNC_t;
-
-unsigned int NETWORK_HANDLE_FROM_PLAYER(unsigned int PlayerIndex)
+OPD_s RTS_4 = { 0x47DF9C, 0x1C85330 };
+OPD_s RTS_5 = { 0x13DE440, 0x1C85330 };
+int(*NETWORK_HANDLE_FROM_PLAYER_FUNC2)(int a_uiRecevPlayerIndex, int valuePointer) = (int(*)(int, int))&RTS_4;
+void(*NETWORK_SEND_TEXT_MESSAGE)(int r3, char* r4, int r5, int r6) = (void(*)(int, char*, int, int))&RTS_5;
+int NETWORK_HANDLE_FROM_PLAYER1(unsigned int PlayerIndex)
 {
-	unsigned int valuePointer = 1;
-	return NETWORK_HANDLE_FROM_PLAYER_FUNC(PlayerIndex, &valuePointer);
+	return NETWORK_HANDLE_FROM_PLAYER_FUNC2(PlayerIndex, 1);
 }
 void SetPlayerStats_Hash(unsigned int a_uiRecevPlayerIndex, unsigned int Stat_Index, float Value_Index)
 {
-	if (isOnline())
+	if(*(int*)0x223F0C0 > 0)
 	{
-		incrementStats(Stat_Index, Value_Index, NETWORK_HANDLE_FROM_PLAYER(a_uiRecevPlayerIndex));
-	}
-	else
-	{
+		incrementStats(Stat_Index, Value_Index, NETWORK_HANDLE_FROM_PLAYER1(a_uiRecevPlayerIndex));
 	}
 }
+
+void SetPlayerStats_Hash_int(unsigned int a_uiRecevPlayerIndex, unsigned int Stat_Index, unsigned int Value_Index)
+{
+	if (*(int*)0x223F0C0 > 0)
+	{
+		incrementStats2(Stat_Index, Value_Index, NETWORK_HANDLE_FROM_PLAYER1(a_uiRecevPlayerIndex));
+	}
+}
+
 int _entityAddressFunc = 0xA55270; //0xA552E0
 int(*GetEntityAddress)(int handle) = (int(*)(int))&_entityAddressFunc;
 
 int create_object_a[2] = { 0x3F8EF8,0x1C85330 };
 int(*create)(unsigned int hash, float*) = (int(*)(unsigned int, float*))&create_object_a;
+
+void ATTACH_ENTITY_TO_ANTITY_B(int what_attach, int to_attach, int bone, Vector3 xyz, Vector3 rot, bool surinuke)
+{
+	ENTITY::ATTACH_ENTITY_TO_ENTITY(what_attach, to_attach, bone, xyz.x, xyz.y, xyz.z, rot.x, rot.y, rot.z, true, true, surinuke, true, true, true);
+}

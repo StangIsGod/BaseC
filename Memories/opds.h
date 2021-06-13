@@ -1,6 +1,6 @@
 #pragma once
 #define ADDR(x) {x,TOC};
-uint32_t TOC;
+uint32_t TOC = 0x1C85330;
 
 #pragma region OPD_s
 int GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS = 0x3AC394;
@@ -10,6 +10,8 @@ OPD_s does_entity_exist_OPD_s;
 OPD_s get_entity_coords_OPD_s;
 OPD_s get_entity_rotation_OPD_s;
 OPD_s GET_GAMEPLAY_CAM_ROT_OPD_s;
+OPD_s START_NEW_SCRIPT_OPD_s;
+
 OPD_s GET_GAMEPLAY_CAM_COORD_OPD_s;
 OPD_s IS_PS3_VERSION_OPD_s;
 OPD_s IS_PC_VERSION_OPD_s;
@@ -29,6 +31,7 @@ OPD_s GET_PED_BONE_COORDS_OPD_s;
 OPD_s GET_PED_LAST_WEAPON_IMPACT_COORD_s;
 OPD_s GET_PED_BONE_COORDS_s;
 OPD_s GET_SHAPE_TEST_RESULT_s;
+OPD_s GET_MAX_WANTED_LEVEL_t;
 OPD_s GET_SHAPE_TEST_RESULT_t = { 0x429A38, 0x1C85330 }; //0x9B87A0
 OPD_s _START_SHAPE_TEST_RAY_s;
 OPD_s _START_SHAPE_TEST_RAY_t = { 0x428E80, 0x1C85330 }; //0x9B87A0
@@ -37,6 +40,7 @@ OPD_s GIVE_ACHIEVEMENT_TO_PLAYER_s = { 0x424590 ,0x1C85330 };
 OPD_s shoot_single_bullet_between_coords_t;
 OPD_s get_offset_from_entity_in_world_coords_t = { GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS , 0x0 };
 OPD_s get_ped_last_weapon_impact_coord_t = ADDR(GET_PED_LAST_WEAPON_IMPACT_COORD);
+
 OPD_s GET_PED_LAST_WEAPON_IMPACT_COORD_t = { 0x468ED0, 0x1C85330 }; //0x9B87A0
 OPD_s set_input_exlcusive_t;//
 OPD_s ATTACH_CAM_TO_ENTITY_t = { 0x3A4134 , 0x0 };
@@ -88,6 +92,7 @@ int(*does_entity_exist_orig)(uint32_t) = (int(*)(uint32_t))&does_entity_exist_OP
 int(*_START_SHAPE_TEST_RAY_orig)(float, float, float, float,float, float, int, Entity, int) = (int(*)(float, float, float, float, float, float, int, Entity, int))&_START_SHAPE_TEST_RAY_s;
 int(*GET_SHAPE_TEST_RESULT_orig)(int, BOOL *, Vector3 *,Vector3 *,Entity *) = (int(*)(int, BOOL *, Vector3 *, Vector3 *, Entity *))&GET_SHAPE_TEST_RESULT_s;
 
+int(*GET_MAX_WANTED_LEVEL_orig)() = (int(*)())&GET_MAX_WANTED_LEVEL_t;
 #pragma endregion
 
 

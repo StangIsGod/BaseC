@@ -12,6 +12,9 @@
     <Filter Include="定義">
       <UniqueIdentifier>{7dac2b8c-a71a-4e27-a601-c0b03dd46e3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Xml">
+      <UniqueIdentifier>{99fdd2b2-4345-488f-a183-f5af495e0284}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -59,6 +62,21 @@
     <ClInclude Include="Tool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuStrings.h">
+      <Filter>定義</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Injector.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -68,6 +86,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="printf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libs2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

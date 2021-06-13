@@ -3,68 +3,34 @@
 #include <sys/socket.h>
 #include <sysutil/sysutil_oskdialog.h>
 #include <sysutil/sysutil_msgdialog.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/sys_time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netex/net.h>
+#include <netex/errno.h>
+
 char *CreateBack;
 bool CreateAccountBool;
 int sleep(int msec);
-#pragma region Converter
-bool cstrcmp(const char* s1, const char* s2)
-{
-	while (*s1 && (*s1 == *s2))
-		s1++, s2++;
-	if (*(const unsigned char*)s1 - *(const unsigned char*)s2 == 0)
-		return true;
-	else
-		return false;
-}
-bool isNumericChar(char x)
-{
-	return (x >= '0' && x <= '9') ? true : false;
-}
-int StoI(char *str)
-{
-	if (*str == NULL)
-		return 0;
 
-	int res = 0,
-		sign = 1,
-		i = 0;
-
-	if (str[0] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	for (; str[i] != '\0'; ++i)
-	{
-		if (isNumericChar(str[i]) == false)
-			return 0;
-		res = res * 10 + str[i] - '0';
-	}
-	return sign*res;
-}
-char *ItoS(int num, bool isX = true)
-{
-	char buf[30];
-	sprintf(buf, isX ? "0x%8X" : "%i", num);
-	return buf;
-}
-char* FtoS(float input = 0.0f, float X = 100)
-{
-	float Backup = input;
-	char returnvalue[64];
-	int wholenumber = (int)input;
-	input -= wholenumber;
-	input *= X;
-	if (Backup < 0)
-	{
-		input *= -1; 
-		wholenumber *= -1;
-	}
-	sprintf(returnvalue, "%d.%d", wholenumber, (int)input);
-	return returnvalue;
-}
-#pragma endregion
 #define SERVER_PORT htons(80)
+
+/*   SCE CONFIDENTIAL                                       */
+/*   PlayStation(R)3 Programmer Tool Runtime Library 370.001 */
+/*   Copyright (C) 2006 Sony Computer Entertainment Inc.    */
+/*   All Rights Reserved.                                   */
+
+#define BUF_SIZE	1024
+#define REQUEST_GET1	"GET "
+#define REQUEST_GET2	" HTTP/1.0\r\nHOST: "
+#define REQUEST_GET3	"\r\n\r\n"
+
 
 char *ReturnPSID()
 {
@@ -214,7 +180,10 @@ namespace network
 	{
 		return responseBuf;
 	}
+
 }
+
+
 
 namespace Dialog
 {

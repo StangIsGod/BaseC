@@ -27,6 +27,17 @@ struct NativeTable_s {
 	uint32_t Hashes[7];
 }**NativeTable;
 
+#define MAX_NATIVE_FUNCTION    7
+struct NativesTable_s
+{
+	NativesTable_s *m_pLastNativesTable;                            //0x0000
+	unsigned int     m_uiNativeFunctions[MAX_NATIVE_FUNCTION];        //0x0008 handlers
+	unsigned int     m_uiNativeCount;                                //0x0040
+	unsigned int     m_uiNativeHashes[MAX_NATIVE_FUNCTION];            //0x0048
+};
+NativesTable_s** g_Natives;
+static NativeArg_s* NativeArg = (NativeArg_s*)0x10060000; //Open space addr
+
 void HookNative(OPD_s* Native, void(*func)(NativeArg_s*))
 {
 	Native->sub = ((OPD_s*)func)->sub;
